@@ -16,3 +16,22 @@
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
 }
+:root {
+  --aside-bg: #1a1625;
+  --aside-border: rgba(124, 58, 237, 0.18);
+  --accent-purple: #7c3aed;
+  --accent-purple-soft: rgba(124, 58, 237, 0.12);
+  --accent-purple-glow: rgba(124, 58, 237, 0.25);
+  --text-primary: #f1f0f5;
+  --text-muted: #9792a8;
+  --text-label: #6b6678;
+  --item-hover: rgba(255, 255, 255, 0.05);
+  --active-bg: rgba(124, 58, 237, 0.15);
+  --color-primary: #424874;
+  --color-primary-100: #F4EEFF;
+  --color-primary-200: #DCD6F7;
+  --color-primary-300: #A6B1E1; 
+  font-family: Poppins, sans-serif;
+}
+
+
