@@ -3,7 +3,7 @@ import type { Pago } from "./pago";
 
 export type EstadoCliente = "activo" | "inactivo";
 
-export type Cliente = {
+export interface Cliente {
   id: number;
   nombre: string;
   cedula: string;

@@ -22,10 +22,7 @@ export default defineNuxtConfig({
       SECRET_KEY: 'THESALUS943875PL',
       api: 'http://localhost:8000',
       login: 'auth/login',
-      eps: 'api/v1/eps',
-      professions: 'api/v1/professions',
-      empresas: 'api/v1/empresas',
-      users: 'api/v1/users',
+      cliente: 'api/cliente',
     }
   },
   eslint: {

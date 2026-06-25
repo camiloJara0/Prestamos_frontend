@@ -25,7 +25,7 @@ const navSections = [
   {
     label: 'Clientes',
     items: [
-      { label: 'Clientes', icon: 'i-lucide-users', to: '/clientes' },
+      { label: 'Clientes', icon: 'i-lucide-users', to: '/Clientes' },
       { label: 'Garantes', icon: 'i-lucide-shield-check', to: '/garantes' },
     ]
   },

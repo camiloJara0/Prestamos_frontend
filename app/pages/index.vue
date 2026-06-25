@@ -5,7 +5,7 @@ definePageMeta({
   layout: 'login'
 })
 
-const login = useLogin()
+const login = useAuthStore()
 const mail = ref('')
 const password = ref('')
 </script>
@@ -24,7 +24,7 @@ const password = ref('')
       <div class="flex flex-col gap-3">
         <UInput v-model="mail" placeholder="Admin@mail.com" icon="i-lucide-mail" class="bg-purple-500 w-full"></UInput>
         <UInput v-model="password" placeholder="password" icon="i-lucide-lock" class="bg-purple-500 w-full"></UInput>
-        <UButton color="primary" variant="solid" @click="login.enviarLogin(mail, password)">Ingresar</UButton>
+        <UButton color="primary" variant="solid" @click="login.login(mail, password)">Ingresar</UButton>
       </div>
     </div>
   </div>
