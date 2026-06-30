@@ -48,7 +48,7 @@ const isActive = (path: string) => route.path === path
 </script>
 
 <template>
-  <aside class="aside-root relative h-screen w-55 bg-(--aside-bg) flex flex-col overflow-hidden" :class="{ collapsed: !varView.showAside }">
+  <aside class="aside-root relative h-screen w-55 bg-(--aside-bg) flex flex-col overflow-hidden" :class="{ collapsed: !varView.showAside }" @mouseenter="varView.showAside = true" @mouseleave="varView.showAside = false">
 
     <!-- Logo / Marca -->
     <div class="border-b border-gray-700 flex items-center gap-2.5 p-[20px_14px_16px] min-h-17">
