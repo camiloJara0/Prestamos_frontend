@@ -1,8 +1,14 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "@fontsource-variable/inter";
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
 
 @theme static {
-  --font-sans: 'Public Sans', sans-serif;
+  --font-sans: 'Inter Variable', 'Public Sans', sans-serif;
+  --font-display: 'Poppins', sans-serif;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
@@ -22,6 +28,8 @@
   --accent-purple: #7c3aed;
   --accent-purple-soft: rgba(124, 58, 237, 0.12);
   --accent-purple-glow: rgba(124, 58, 237, 0.25);
+  --accent-gold: #d4af37;
+  --accent-gold-soft: rgba(212, 175, 55, 0.15);
   --text-primary: #f1f0f5;
   --text-muted: #9792a8;
   --text-label: #6b6678;
@@ -30,8 +38,28 @@
   --color-primary: #424874;
   --color-primary-100: #F4EEFF;
   --color-primary-200: #DCD6F7;
-  --color-primary-300: #A6B1E1; 
-  font-family: Poppins, sans-serif;
+  --color-primary-300: #A6B1E1;
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(124, 58, 237, 0.18);
+}
+
+.dark .glass {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(124, 58, 237, 0.18);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(124, 58, 237, 0.12);
 }
 
 

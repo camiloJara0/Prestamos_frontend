@@ -1,62 +1,81 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-
 const varView = useVarView()
+const auth = useAuthStore()
 
 const route = useRoute()
 
-const navSections = [
+const navSections = computed(() => [
   {
     label: 'Principal',
     items: [
-      { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/dashboard' },
-      { label: 'Resumen', icon: 'i-lucide-chart-pie', to: '/resumen' },
+      { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/' },
+      { label: 'Crear préstamo', icon: 'i-lucide-plus', to: '/prestamos/nuevo' }
     ]
   },
   {
     label: 'Préstamos',
     items: [
       { label: 'Préstamos', icon: 'i-lucide-hand-coins', to: '/prestamos' },
-      { label: 'Solicitudes', icon: 'i-lucide-file-text', to: '/solicitudes' },
-      { label: 'Pagos', icon: 'i-lucide-credit-card', to: '/pagos' },
-      { label: 'Cuotas', icon: 'i-lucide-calendar-check', to: '/cuotas' },
+      { label: 'Pagos', icon: 'i-lucide-credit-card', to: '/pagos' }
     ]
   },
   {
     label: 'Clientes',
     items: [
-      { label: 'Clientes', icon: 'i-lucide-users', to: '/Clientes' },
-      { label: 'Garantes', icon: 'i-lucide-shield-check', to: '/garantes' },
+      { label: 'Clientes', icon: 'i-lucide-users', to: '/clientes' }
     ]
   },
   {
     label: 'Reportes',
     items: [
-      { label: 'Informes', icon: 'i-lucide-bar-chart-2', to: '/informes' },
-      { label: 'Cobranza', icon: 'i-lucide-trending-up', to: '/cobranza' },
+      { label: 'Reportes', icon: 'i-lucide-bar-chart-2', to: '/reportes' },
+      { label: 'Cobranza', icon: 'i-lucide-trending-up', to: '/cobranza' }
     ]
   },
-  {
-    label: 'Sistema',
-    items: [
-      { label: 'Configuración', icon: 'i-lucide-settings', to: '/configuracion' },
-    ]
-  }
-]
+  ...(auth.isAdmin
+    ? [{
+        label: 'Configuración',
+        items: [
+          { label: 'Capital', icon: 'i-lucide-wallet', to: '/capital', admin: true },
+          { label: 'Tipos de préstamo', icon: 'i-lucide-tags', to: '/tipos-prestamo', admin: true },
+          { label: 'Tipos de pago', icon: 'i-lucide-list', to: '/tipos-pago', admin: true },
+          { label: 'Usuarios', icon: 'i-lucide-user-cog', to: '/usuarios', admin: true }
+        ]
+      }]
+    : [])
+])
 
 const isActive = (path: string) => route.path === path
+
+const iniciales = computed(() => {
+  const nombre = auth.user?.nombre ?? 'Usuario'
+  return nombre.split(' ').map((p: string) => p[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+})
+
+async function cerrarSesion() {
+  await auth.logout()
+  await navigateTo('/login')
+}
 </script>
 
 <template>
-  <aside class="aside-root relative h-screen w-55 bg-(--aside-bg) flex flex-col overflow-hidden" :class="{ collapsed: !varView.showAside }">
-
+  <aside
+    class="aside-root relative h-screen w-55 bg-(--aside-bg) flex flex-col overflow-hidden"
+    :class="{ collapsed: !varView.showAside }"
+  >
     <!-- Logo / Marca -->
     <div class="border-b border-gray-700 flex items-center gap-2.5 p-[20px_14px_16px] min-h-17">
       <div class="shrink-0 w-7.5 h-7.5 rounded-lg flex items-center justify-center bg-[rgba(124,58,237,0.22)]">
-        <UIcon name="i-lucide-landmark" class="text-lg text-[#a78bf4]" />
+        <UIcon
+          name="i-lucide-landmark"
+          class="text-lg text-[#a78bf4]"
+        />
       </div>
       <Transition name="fade-text">
-        <div v-if="varView.showAside" class="flex flex-col gap-0.5 overflow-hidden text-nowrap">
+        <div
+          v-if="varView.showAside"
+          class="flex flex-col gap-0.5 overflow-hidden text-nowrap"
+        >
           <span class=" text-lg font-bold text-white tracking-wide">LoanSoft</span>
           <span class=" text-xs text-gray-400 uppercase">Gestión de Crédito</span>
         </div>
@@ -64,17 +83,36 @@ const isActive = (path: string) => route.path === path
     </div>
 
     <!-- Toggle -->
-    <button class="toggle-btn absolute top-5 right-2.5 w-6 h-6 rounded-xs border-none bg-transparent text-(--text-label) flex items-center justify-center cursor-pointer" @click="varView.showAside = !varView.showAside" :title="varView.showAside ? 'Contraer menú' : 'Expandir menú'">
-      <UIcon :name="varView.showAside ? 'i-lucide-panel-left-close' : 'i-lucide-panel-left-open'" class="toggle-icon" />
+    <button
+      class="toggle-btn absolute top-5 right-2.5 w-6 h-6 rounded-xs border-none bg-transparent text-(--text-label) flex items-center justify-center cursor-pointer"
+      :title="varView.showAside ? 'Contraer menú' : 'Expandir menú'"
+      @click="varView.showAside = !varView.showAside"
+    >
+      <UIcon
+        :name="varView.showAside ? 'i-lucide-panel-left-close' : 'i-lucide-panel-left-open'"
+        class="toggle-icon"
+      />
     </button>
 
     <!-- Navegación -->
     <nav class="aside-nav">
-      <div v-for="section in navSections" :key="section.label" class="nav-section">
+      <div
+        v-for="section in navSections"
+        :key="section.label"
+        class="nav-section"
+      >
         <Transition name="fade-text">
-          <p v-if="varView.showAside" class="section-label">{{ section.label }}</p>
+          <p
+            v-if="varView.showAside"
+            class="section-label"
+          >
+            {{ section.label }}
+          </p>
         </Transition>
-        <div v-if="!varView.showAside" class="section-divider" />
+        <div
+          v-if="!varView.showAside"
+          class="section-divider"
+        />
 
         <NuxtLink
           v-for="item in section.items"
@@ -83,12 +121,21 @@ const isActive = (path: string) => route.path === path
           class="nav-item"
           :class="{ active: isActive(item.to) }"
         >
-          <UIcon :name="item.icon" class="nav-icon" />
+          <UIcon
+            :name="item.icon"
+            class="nav-icon"
+          />
           <Transition name="fade-text">
-            <span v-if="varView.showAside" class="nav-label">{{ item.label }}</span>
+            <span
+              v-if="varView.showAside"
+              class="nav-label"
+            >{{ item.label }}</span>
           </Transition>
           <Transition name="fade-text">
-            <span v-if="varView.showAside && isActive(item.to)" class="active-dot" />
+            <span
+              v-if="varView.showAside && isActive(item.to)"
+              class="active-dot"
+            />
           </Transition>
         </NuxtLink>
       </div>
@@ -96,32 +143,35 @@ const isActive = (path: string) => route.path === path
 
     <!-- Footer usuario -->
     <div class="aside-footer">
-      <div class="user-avatar">AG</div>
+      <div class="user-avatar">
+        {{ iniciales }}
+      </div>
       <Transition name="fade-text">
-        <div v-if="varView.showAside" class="user-info">
-          <span class="user-name">Ana García</span>
-          <span class="user-role">Administradora</span>
+        <div
+          v-if="varView.showAside"
+          class="user-info"
+        >
+          <span class="user-name">{{ auth.user?.nombre ?? 'Usuario' }}</span>
+          <span class="user-role">{{ auth.user?.rol === 'admin' ? 'Administrador' : 'Usuario' }}</span>
         </div>
       </Transition>
       <Transition name="fade-text">
         <UButton
           v-if="varView.showAside"
-          to="/"
           icon="i-lucide-log-out"
           color="neutral"
           variant="ghost"
           size="xs"
           class="logout-btn"
           title="Cerrar sesión"
+          @click="cerrarSesion"
         />
       </Transition>
     </div>
-
   </aside>
 </template>
 
 <style scoped>
-
 /* ── Aside raíz ── */
 .aside-root {
   border-right: 1px solid rgba(124, 58, 237, 0.15);

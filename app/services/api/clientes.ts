@@ -1,36 +1,26 @@
-import api from '~/services/api'
-import type { Cliente } from '~/types/clientes'
+import type { Cliente, ClienteCreate } from '#shared/types/clientes'
 
-// Obtener todos los clientes
-export const getClientes = async () => {
-  try {
-    const response = await api.get('/clientes')
-    return response.data
-  } catch (error: any) {
-    // Ya viene procesado por el interceptor
-    throw error
-  }
+export interface ListadoClientesParams {
+  skip?: number
+  limit?: number
 }
 
-// Obtener cliente por ID
-export const getClienteById = async (id: string) => {
-  try {
-    const response = await api.get(`/clientes/${id}`)
-    return response.data
-  } catch (error: any) {
-    throw error
-  }
+export const getClientes = async (params: ListadoClientesParams = {}) => {
+  return useApi().apiGet<Cliente[]>('/clientes', { query: { ...params } })
 }
 
+export const getClienteById = async (id: number) => {
+  return useApi().apiGet<Cliente>(`/clientes/${id}`)
+}
 
-// Crear cliente (POST)
-export const createCliente = async (data: Cliente) => {
-  try {
-    const response = await api.post('/clientes', data)
+export const createCliente = async (data: ClienteCreate) => {
+  return useApi().apiPost<Cliente>('/clientes', data)
+}
 
-    return response.data
-  } catch (error: any) {
-    // El error ya viene manejado desde api.ts
-    throw error
-  }
+export const updateCliente = async (id: number, data: ClienteCreate) => {
+  return useApi().apiPut<Cliente>(`/clientes/${id}`, data)
+}
+
+export const deleteCliente = async (id: number) => {
+  return useApi().apiDelete<{ mensaje: string }>(`/clientes/${id}`)
 }

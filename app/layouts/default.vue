@@ -1,18 +1,33 @@
 <script setup lang="ts">
-const varView = useVarView()
+const syncStore = useSyncStore()
+const offline = useOffline()
+
+onMounted(() => {
+  offline.init()
+  syncStore.setOnline(offline.isOnline.value)
+})
+
+watch(() => offline.isOnline.value, (val) => {
+  syncStore.setOnline(val)
+})
+
+onUnmounted(() => {
+  offline.destroy()
+})
 </script>
 
 <template>
   <div class="layout-root">
-
-    <!-- Aside con animación de ancho via CSS -->
     <LayoutAside />
 
-    <!-- Contenido principal -->
-    <main class="layout-main">
-      <slot />
-    </main>
+    <div class="layout-content">
+      <AppConnectionBanner />
+      <AppAppHeader />
 
+      <main class="layout-main">
+        <slot />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -25,25 +40,21 @@ const varView = useVarView()
   background: #f5f4f9;
 }
 
-/*
-  El aside se autogestiona su propio ancho via CSS (220px / 56px).
-  El main ocupa el espacio restante con flex: 1.
-  La transición del aside propaga naturalmente a este contenedor.
-*/
-.layout-main {
+.layout-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  overflow-y: auto;
-  background: #f5f4f9;
-
-  /* Scroll suave */
-  scroll-behavior: smooth;
-
-  /* Animación de entrada de contenido al expandir/colapsar */
-  transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0;
 }
 
-/* Scrollbar discreta */
+.layout-main {
+  flex: 1;
+  overflow-y: auto;
+  background: #f5f4f9;
+  scroll-behavior: smooth;
+}
+
 .layout-main::-webkit-scrollbar {
   width: 5px;
 }

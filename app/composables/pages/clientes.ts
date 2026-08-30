@@ -1,117 +1,113 @@
-import { useClienteStore } from "~/stores/pages/clientes";
-import type { Cliente } from "~/types/clientes";
+import type { Cliente } from '#shared/types/clientes'
 import { UBadge, UButton, UDropdownMenu } from '#components'
 import { h } from 'vue'
 
 export function useClientesActions() {
-
-  const store = useClienteStore()
-
   const columns = [
     {
-        accessorKey: 'id',
-        header: 'ID'
+      accessorKey: 'id',
+      header: 'ID'
     },
     {
-        accessorKey: 'nombre',
-        header: 'Nombre'
+      accessorKey: 'nombre',
+      header: 'Nombre'
     },
     {
-        accessorKey: 'cedula',
-        header: 'Cedula',
+      accessorKey: 'cedula',
+      header: 'Cedula'
     },
     {
-        accessorKey: 'direccion',
-        header: 'Direccion',
+      accessorKey: 'direccion',
+      header: 'Direccion'
     },
     {
-        accessorKey: 'telefono',
-        header: 'Telefono',
+      accessorKey: 'telefono',
+      header: 'Telefono'
     },
     {
-        accessorKey: 'estado',
-        header: 'Estado',
-        cell: ({ row }) => {
-            const estado = row.getValue('estado')
+      accessorKey: 'estado',
+      header: 'Estado',
+      cell: ({ row }: { row: { getValue: (key: string) => string } }) => {
+        const estado = row.getValue('estado')
 
-            const color =
-                estado === 'activo'
-                ? 'success'
-                : estado === 'inactivo'
-                ? 'neutral'
-                : 'warning'
+        const color
+          = estado === 'activo'
+            ? 'success'
+            : estado === 'inactivo'
+              ? 'neutral'
+              : 'warning'
 
-            return h(
-                UBadge,
-                { variant: 'subtle', color, class: 'capitalize' },
-                () => estado
-            )
-        }
+        return h(
+          UBadge,
+          { variant: 'subtle', color, class: 'capitalize' },
+          () => estado
+        )
+      }
     },
     {
-        id: 'actions',
-        cell: ({ row }) =>
+      id: 'actions',
+      cell: ({ row }: { row: { original: Cliente } }) =>
         h(
-            'div',
-            { class: 'text-right' },
-            h(
+          'div',
+          { class: 'text-right' },
+          h(
             UDropdownMenu,
             {
-                content: { align: 'end' },
-                items: getRowItems(row)
+              content: { align: 'end' },
+              items: getRowItems(row)
             },
             () =>
-                h(UButton, {
+              h(UButton, {
                 icon: 'i-lucide-ellipsis-vertical',
                 color: 'neutral',
                 variant: 'ghost'
-                })
-            )
+              })
+          )
         )
-    },
-  ]
-
-function getRowItems(row) {
-  const cliente = row.original
-
-  return [
-    {
-      type: 'label',
-      label: 'Acciones'
-    },
-    {
-      label: 'Editar',
-      onSelect() {
-        editarCliente(cliente)
-      }
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Eliminar',
-      onSelect() {
-        eliminarCliente(cliente)
-      }
     }
   ]
-}
-  
+
+  function getRowItems(row: { original: Cliente }) {
+    const cliente = row.original
+
+    return [
+      {
+        type: 'label' as const,
+        label: 'Acciones'
+      },
+      {
+        label: 'Editar',
+        onSelect() {
+          editarCliente(cliente)
+        }
+      },
+      {
+        type: 'separator' as const
+      },
+      {
+        label: 'Eliminar',
+        onSelect() {
+          eliminarCliente(cliente)
+        }
+      }
+    ]
+  }
+
   const agregarCliente = () => {
 
-  };
+  }
 
   const cerrarCliente = () => {
 
-  };
+  }
 
-  const editarCliente = async () => {
+  const editarCliente = async (_cliente: Cliente) => {
 
-  };
+  }
 
-  const eliminarCliente = async () => {
+  const eliminarCliente = async (_cliente: Cliente) => {
 
-  };
+  }
 
   return {
     agregarCliente,
@@ -119,5 +115,5 @@ function getRowItems(row) {
     editarCliente,
     eliminarCliente,
     columns
-  };
+  }
 }

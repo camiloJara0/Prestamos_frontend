@@ -5,26 +5,19 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@pinia/nuxt'
   ],
-  typescript: {strict: true},
   devtools: {
     enabled: true
   },
 
   css: ['~/assets/css/main.css'],
-
-  routeRules: {
-    '/': { prerender: true }
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000'
+    }
   },
 
   compatibilityDate: '2025-01-15',
-  runtimeConfig: {
-    public: {
-      SECRET_KEY: 'THESALUS943875PL',
-      api: 'http://localhost:8000',
-      login: 'auth/login',
-      cliente: 'api/cliente',
-    }
-  },
+  typescript: { strict: true },
   eslint: {
     config: {
       stylistic: {
