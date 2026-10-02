@@ -27,7 +27,7 @@
  "RF-006": {
   "nombre": "Recuperación de contraseña",
   "prioridad": "Media",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-007": {
   "nombre": "Administración de usuarios",
@@ -47,12 +47,12 @@
  "RF-010": {
   "nombre": "Auditoría de operaciones sensibles",
   "prioridad": "Alta",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-011": {
   "nombre": "Configuración del sistema",
   "prioridad": "Alta",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-012": {
   "nombre": "Alta de cliente",
@@ -64,16 +64,16 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
-  "RF-014": {
-   "nombre": "Búsqueda por nombre, cédula o teléfono",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
-  "RF-015": {
-   "nombre": "Detalle del cliente con historial",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
+ "RF-014": {
+  "nombre": "Búsqueda por nombre, cédula o teléfono",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-015": {
+  "nombre": "Detalle del cliente con historial",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
  "RF-016": {
   "nombre": "Edición y baja de clientes",
   "prioridad": "Alta",
@@ -167,12 +167,12 @@
  "RF-034": {
   "nombre": "Ajuste de capital del préstamo",
   "prioridad": "Media",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-035": {
   "nombre": "Reestructuración de préstamo",
   "prioridad": "Media",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-036": {
   "nombre": "Registro de pago con desglose",
@@ -199,41 +199,41 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
-  "RF-041": {
-   "nombre": "Historial global de pagos",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
+ "RF-041": {
+  "nombre": "Historial global de pagos",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
  "RF-042": {
   "nombre": "Reversión o ajuste de pagos",
   "prioridad": "Alta",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-043": {
   "nombre": "Comprobante de pago",
   "prioridad": "Media",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-044": {
   "nombre": "Cálculo diario de moras",
   "prioridad": "Máxima",
   "estado": "Completada"
  },
-  "RF-045": {
-   "nombre": "Consulta de moras por préstamo",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
-  "RF-046": {
-   "nombre": "Procesamiento manual de moras",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
-  "RF-047": {
-   "nombre": "Gestión de cobranza",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
+ "RF-045": {
+  "nombre": "Consulta de moras por préstamo",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-046": {
+  "nombre": "Procesamiento manual de moras",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-047": {
+  "nombre": "Gestión de cobranza",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
  "RF-048": {
   "nombre": "Recordatorios de cobro",
   "prioridad": "Alta",
@@ -252,7 +252,7 @@
  "RF-051": {
   "nombre": "Ingresos y egresos de caja",
   "prioridad": "Alta",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-052": {
   "nombre": "Reporte de ganancias y pérdidas",
@@ -262,12 +262,12 @@
  "RF-053": {
   "nombre": "Reporte de cartera",
   "prioridad": "Alta",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-054": {
   "nombre": "Reporte de cobranza",
   "prioridad": "Alta",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-055": {
   "nombre": "Exportación a Excel y PDF",
@@ -279,20 +279,20 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
-  "RF-057": {
-   "nombre": "Distribución de cartera por estado",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
-  "RF-058": {
-   "nombre": "Indicadores de cobranza y mora",
-   "prioridad": "Alta",
-   "estado": "Completada"
-  },
+ "RF-057": {
+  "nombre": "Distribución de cartera por estado",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-058": {
+  "nombre": "Indicadores de cobranza y mora",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
  "RF-059": {
   "nombre": "Consulta consolidada del tablero",
   "prioridad": "Media",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-060": {
   "nombre": "Notificaciones web push",

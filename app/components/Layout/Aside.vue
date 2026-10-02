@@ -25,6 +25,8 @@ const navSections = computed(() => [
         label: 'Configuración',
         items: [
           { label: 'Capital', icon: 'i-lucide-wallet', to: '/capital', admin: true },
+          { label: 'Parámetros', icon: 'i-lucide-settings', to: '/configuracion', admin: true },
+          { label: 'Auditoría', icon: 'i-lucide-shield-check', to: '/auditoria', admin: true },
           { label: 'Tipos de préstamo', icon: 'i-lucide-tags', to: '/tipos-prestamo', admin: true },
           { label: 'Tipos de pago', icon: 'i-lucide-list', to: '/tipos-pago', admin: true },
           { label: 'Moras', icon: 'i-lucide-alert-triangle', to: '/moras', admin: true },

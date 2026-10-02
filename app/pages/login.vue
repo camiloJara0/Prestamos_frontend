@@ -117,6 +117,14 @@ async function ingresar() {
       >
         Ingresar
       </UButton>
+      <div class="text-center">
+        <NuxtLink
+          to="/recuperar"
+          class="text-sm text-purple-200/70 hover:text-white"
+        >
+          ¿Olvidaste tu contraseña?
+        </NuxtLink>
+      </div>
     </form>
   </div>
 </template>

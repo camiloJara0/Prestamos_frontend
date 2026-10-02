@@ -9,8 +9,16 @@ definePageMeta({
 })
 
 const formateo = useFormatters()
-const { pagos, paginacion, loading, error, fetch, cambiarPagina } = usePagos()
+const toast = useToast()
+const auth = useAuthStore()
+const { pagos, paginacion, loading, error, fetch, cambiarPagina, devolver, descargarComprobante } = usePagos()
 const { tipos: tiposPago, fetch: fetchTiposPago } = useTiposPago()
+
+const pagoDevolver = ref<number | null>(null)
+const motivoDevolucion = ref('')
+const errorMotivo = ref<string | null>(null)
+const enviandoDevolucion = ref(false)
+const comprobanteDescargando = ref<number | null>(null)
 
 const opcionesClientes = ref<{ label: string, value: number }[]>([])
 const opcionesTipos = ref<{ label: string, value: number }[]>([])
@@ -63,12 +71,50 @@ function irAPagina(page: number) {
   cambiarPagina(page)
 }
 
+function abrirDevolucion(id: number) {
+  pagoDevolver.value = id
+  motivoDevolucion.value = ''
+  errorMotivo.value = null
+}
+
+async function confirmarDevolucion() {
+  if (pagoDevolver.value == null) return
+  const motivo = motivoDevolucion.value.trim()
+  if (motivo.length < 5) {
+    errorMotivo.value = 'El motivo debe tener al menos 5 caracteres'
+    return
+  }
+  enviandoDevolucion.value = true
+  try {
+    await devolver(pagoDevolver.value, motivo)
+    toast.add({ title: 'Pago devuelto y saldos revertidos', color: 'success' })
+    pagoDevolver.value = null
+  } catch (e) {
+    toast.add({ title: (e as { detail: string }).detail || 'No se pudo devolver el pago', color: 'error' })
+  } finally {
+    enviandoDevolucion.value = false
+  }
+}
+
+async function descargar(id: number) {
+  comprobanteDescargando.value = id
+  try {
+    await descargarComprobante(id)
+    toast.add({ title: 'Comprobante descargado', color: 'success' })
+  } catch {
+    toast.add({ title: 'No se pudo generar el comprobante', color: 'error' })
+  } finally {
+    comprobanteDescargando.value = null
+  }
+}
+
 async function inicializar() {
   await Promise.all([fetch({ page: 1, limit: 50 }), cargarOpciones()])
 }
 inicializar()
 
 const filas = computed(() => pagos.value.map(p => ({
+  id: p.id,
   fecha: formateo.formatoFecha(p.fecha_pago),
   cliente: p.cliente_nombre ?? `#${p.cliente_id}`,
   prestamo: `#${p.prestamo_id}`,
@@ -93,7 +139,8 @@ const columns = [
   { accessorKey: 'capital', header: 'Capital' },
   { accessorKey: 'interes', header: 'Interés' },
   { accessorKey: 'mora', header: 'Mora' },
-  { accessorKey: 'estado', header: 'Estado' }
+  { accessorKey: 'estado', header: 'Estado' },
+  { accessorKey: 'acciones', header: 'Acciones' }
 ]
 </script>
 
@@ -192,7 +239,30 @@ const columns = [
         sticky
         :data="filas"
         :columns="columns"
-      />
+      >
+        <template #acciones-cell="{ row }">
+          <div class="flex items-center gap-1">
+            <UButton
+              icon="i-lucide-file-down"
+              color="info"
+              variant="ghost"
+              size="xs"
+              title="Descargar comprobante"
+              :loading="comprobanteDescargando === Number(row.original.id)"
+              @click="descargar(Number(row.original.id))"
+            />
+            <UButton
+              v-if="auth.isAdmin && String(row.original.estado) !== 'devuelto'"
+              icon="i-lucide-undo-2"
+              color="error"
+              variant="ghost"
+              size="xs"
+              title="Devolver pago"
+              @click="abrirDevolucion(Number(row.original.id))"
+            />
+          </div>
+        </template>
+      </UTable>
 
       <div
         v-if="paginacion && paginacion.pages > 1"
@@ -221,5 +291,54 @@ const columns = [
         </div>
       </div>
     </UCard>
+
+    <UModal
+      :open="pagoDevolver != null"
+      @update:open="(v: boolean) => { if (!v) pagoDevolver = null }"
+    >
+      <template #title>
+        Devolver pago #{{ pagoDevolver }}
+      </template>
+      <template #body>
+        <div class="space-y-3">
+          <UAlert
+            icon="i-lucide-alert-triangle"
+            color="warning"
+            title="Reversión en cascada"
+            description="Se revertirán el saldo del préstamo, la cuota y el capital. El pago se conserva anulado con su motivo."
+          />
+          <UFormField
+            label="Motivo de la devolución"
+            required
+            :error="errorMotivo ?? undefined"
+          >
+            <UTextarea
+              v-model="motivoDevolucion"
+              class="w-full"
+              :rows="3"
+              placeholder="Detalle por qué se anula este pago (mínimo 5 caracteres)"
+            />
+          </UFormField>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton
+            label="Cancelar"
+            color="neutral"
+            variant="outline"
+            :disabled="enviandoDevolucion"
+            @click="pagoDevolver = null"
+          />
+          <UButton
+            label="Confirmar devolución"
+            color="error"
+            icon="i-lucide-undo-2"
+            :loading="enviandoDevolucion"
+            @click="confirmarDevolucion"
+          />
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>

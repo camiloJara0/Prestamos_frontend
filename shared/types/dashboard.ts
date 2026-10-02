@@ -17,4 +17,7 @@ export type DashboardResumen = {
   monto_vencido: number
   mora_pendiente: number
   cobro_del_dia: number
+  // Indicadores de pérdidas (RF-059)
+  total_perdidas: number
+  cantidad_prestamos_perdidos: number
 }

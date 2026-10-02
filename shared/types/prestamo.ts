@@ -62,3 +62,23 @@ export type RespuestaMarcarPerdido = {
   motivo: string | null
   fecha: string
 }
+
+export type ReestructuracionCreate = {
+  numero_cuotas: number
+  porcentaje_interes: number
+  fecha_inicio: string
+  motivo: string
+}
+
+export type ReestructuracionOut = {
+  id: number
+  prestamo_id: number
+  fecha: string
+  motivo: string | null
+  saldo_anterior: number
+  numero_cuotas: number
+  porcentaje_interes: number
+  valor_cuota: number
+  monto_plan: number
+  estado: 'activa' | 'cerrada'
+}

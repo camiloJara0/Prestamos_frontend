@@ -15,6 +15,8 @@ const allItems = [
   { label: 'Reportes', icon: 'i-lucide-bar-chart-2', to: '/reportes' },
   { label: 'Moras', icon: 'i-lucide-alert-triangle', to: '/moras' },
   { label: 'Capital', icon: 'i-lucide-wallet', to: '/capital' },
+  { label: 'Parámetros del sistema', icon: 'i-lucide-settings', to: '/configuracion' },
+  { label: 'Auditoría', icon: 'i-lucide-shield-check', to: '/auditoria' },
   { label: 'Tipos de préstamo', icon: 'i-lucide-tag', to: '/tipos-prestamo' },
   { label: 'Tipos de pago', icon: 'i-lucide-credit-card', to: '/tipos-pago' },
   { label: 'Cerrar sesión', icon: 'i-lucide-log-out', action: () => cerrarSesion() }
@@ -22,7 +24,7 @@ const allItems = [
 
 const filteredItems = computed(() => {
   return allItems.filter((item) => {
-    if (item.to && !auth.isAdmin && ['/tipos-prestamo', '/tipos-pago', '/capital'].includes(item.to)) {
+    if (item.to && !auth.isAdmin && ['/tipos-prestamo', '/tipos-pago', '/capital', '/configuracion', '/auditoria', '/moras'].includes(item.to)) {
       return false
     }
     return true

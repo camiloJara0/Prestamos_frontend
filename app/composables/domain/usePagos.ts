@@ -1,6 +1,6 @@
 import type { Pago, PagoCreate, FiltrosHistorialPagos } from '#shared/types/pago'
 import type { RespuestaPaginada } from '#shared/types/paginacion'
-import { getPagos, createPago } from '~/services/api/pago'
+import { getPagos, createPago, devolverPago, descargarComprobantePago } from '~/services/api/pago'
 
 export function usePagos() {
   const pagos = ref<Pago[]>([])
@@ -42,5 +42,15 @@ export function usePagos() {
     return pago
   }
 
-  return { pagos, paginacion, loading, error, fetch, cambiarPagina, recargar, crear }
+  async function devolver(id: number, motivo: string) {
+    const pago = await devolverPago(id, motivo)
+    await recargar()
+    return pago
+  }
+
+  async function descargarComprobante(id: number) {
+    await descargarComprobantePago(id)
+  }
+
+  return { pagos, paginacion, loading, error, fetch, cambiarPagina, recargar, crear, devolver, descargarComprobante }
 }

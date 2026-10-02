@@ -1,5 +1,5 @@
-import type { Prestamo, PrestamoCreate, PrestamoDetalle, PrestamoFiltros, RenovacionCreate } from '#shared/types/prestamo'
-import { createPrestamo, getPrestamoById, getPrestamos, marcarPrestamoPerdido, renovarPrestamo } from '~/services/api/prestamo'
+import type { Prestamo, PrestamoCreate, PrestamoDetalle, PrestamoFiltros, RenovacionCreate, ReestructuracionCreate, ReestructuracionOut } from '#shared/types/prestamo'
+import { ajustarCapitalPrestamo, createPrestamo, getPrestamoById, getPrestamos, marcarPrestamoPerdido, reestructurarPrestamo, renovarPrestamo } from '~/services/api/prestamo'
 
 export function usePrestamos() {
   const prestamos = ref<Prestamo[]>([])
@@ -59,9 +59,21 @@ export function usePrestamos() {
     return respuesta
   }
 
+  async function ajustarCapital(id: number, nuevoCapital: number) {
+    const respuesta = await ajustarCapitalPrestamo(id, nuevoCapital)
+    await byId(id)
+    return respuesta
+  }
+
+  async function reestructurar(id: number, datos: ReestructuracionCreate): Promise<ReestructuracionOut> {
+    const respuesta = await reestructurarPrestamo(id, datos)
+    await byId(id)
+    return respuesta
+  }
+
   function setFiltros(f: PrestamoFiltros) {
     filtros.value = { ...filtros.value, ...f }
   }
 
-  return { prestamos, detalle, loading, error, filtros, fetch, byId, crear, renovar, marcarPerdido, setFiltros }
+  return { prestamos, detalle, loading, error, filtros, fetch, byId, crear, renovar, marcarPerdido, ajustarCapital, reestructurar, setFiltros }
 }

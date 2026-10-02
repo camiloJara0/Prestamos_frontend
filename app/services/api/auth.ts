@@ -20,3 +20,11 @@ export function logoutRequest() {
 export function changePassword(payload: { password_actual: string, password_nuevo: string }) {
   return useApi().apiPost<{ message: string }>('/auth/change-password', payload)
 }
+
+export function forgotPassword(email: string) {
+  return useApi().apiPost<{ message: string }>('/auth/forgot-password', { email }, { retry: false })
+}
+
+export function resetPassword(token: string, newPassword: string) {
+  return useApi().apiPost<{ message: string }>('/auth/reset-password', { token, new_password: newPassword }, { retry: false })
+}

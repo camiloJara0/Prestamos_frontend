@@ -7,6 +7,8 @@ import PrestamoTabs from '~/components/prestamos/PrestamoTabs.vue'
 import PrestamoPagoModal from '~/components/prestamos/PrestamoPagoModal.vue'
 import RenovarModal from '~/components/prestamos/RenovarModal.vue'
 import MarcarPerdidoModal from '~/components/prestamos/MarcarPerdidoModal.vue'
+import AjustarCapitalModal from '~/components/prestamos/AjustarCapitalModal.vue'
+import ReestructurarModal from '~/components/prestamos/ReestructurarModal.vue'
 
 definePageMeta({
   middleware: 'auth'
@@ -15,15 +17,18 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const auth = useAuthStore()
 const formateo = useFormatters()
 
 const prestamoId = computed(() => Number(route.params.id))
 
-const { detalle, loading, error, byId, renovar, marcarPerdido } = usePrestamos()
+const { detalle, loading, error, byId, renovar, marcarPerdido, ajustarCapital, reestructurar } = usePrestamos()
 
 const renovarAbierto = ref(false)
 const perdidoAbierto = ref(false)
 const pagoAbierto = ref(false)
+const ajustarAbierto = ref(false)
+const reestructurarAbierto = ref(false)
 const cuotaSeleccionada = ref<PrestamoCuota | null>(null)
 
 async function inicializar() {
@@ -73,6 +78,28 @@ async function confirmarPerdido(data: { motivo?: string | null, fecha: string })
 async function despuesDePago() {
   cuotaSeleccionada.value = null
   await byId(prestamoId.value)
+}
+
+async function confirmarAjustar(nuevoCapital: number) {
+  try {
+    await ajustarCapital(prestamoId.value, nuevoCapital)
+    toast.add({ title: 'Capital ajustado y cuotas recalculadas', color: 'success' })
+    ajustarAbierto.value = false
+  } catch (e) {
+    toast.add({ title: (e as { detail: string }).detail || 'No se pudo ajustar el capital', color: 'error' })
+    ajustarAbierto.value = false
+  }
+}
+
+async function confirmarReestructurar(data: { numero_cuotas: number, porcentaje_interes: number, fecha_inicio: string, motivo: string }) {
+  try {
+    const reest = await reestructurar(prestamoId.value, data)
+    toast.add({ title: `Plan reestructurado: ${reest.numero_cuotas} cuotas de ${formateo.formatoMoneda(reest.valor_cuota)}`, color: 'success' })
+    reestructurarAbierto.value = false
+  } catch (e) {
+    toast.add({ title: (e as { detail: string }).detail || 'No se pudo reestructurar el préstamo', color: 'error' })
+    reestructurarAbierto.value = false
+  }
 }
 </script>
 
@@ -159,6 +186,24 @@ async function despuesDePago() {
           >
             Perdido
           </UButton>
+          <UButton
+            v-if="auth.isAdmin"
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-coins"
+            @click="() => { ajustarAbierto = true }"
+          >
+            Ajustar capital
+          </UButton>
+          <UButton
+            v-if="auth.isAdmin"
+            color="warning"
+            variant="outline"
+            icon="i-lucide-refresh-ccw"
+            @click="() => { reestructurarAbierto = true }"
+          >
+            Reestructurar
+          </UButton>
         </div>
       </div>
 
@@ -232,6 +277,20 @@ async function despuesDePago() {
       :prestamo="prestamo"
       @update:open="perdidoAbierto = $event"
       @confirmar="confirmarPerdido"
+    />
+
+    <AjustarCapitalModal
+      :open="ajustarAbierto"
+      :prestamo="prestamo"
+      @update:open="ajustarAbierto = $event"
+      @confirmar="confirmarAjustar"
+    />
+
+    <ReestructurarModal
+      :open="reestructurarAbierto"
+      :prestamo="prestamo"
+      @update:open="reestructurarAbierto = $event"
+      @confirmar="confirmarReestructurar"
     />
   </div>
 </template>

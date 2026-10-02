@@ -26,15 +26,18 @@ export function useDashboard() {
     resumen: null
   })
 
-  const totalActivos = computed(() => data.prestamosActivos.length)
+  // RF-059: los indicadores se pintan desde la consulta consolidada cuando existe;
+  // solo se degradan a las consultas múltiples si el endpoint consolidado falla.
+  const totalActivos = computed(() => data.resumen?.prestamos_activos ?? data.prestamosActivos.length)
   const saldoPendienteTotal = computed(() => {
+    if (data.resumen) return data.resumen.saldo_pendiente_total
     if (!data.prestamosActivos.length) return 0
     return data.prestamosActivos.reduce((sum, p) => sum + p.saldo_pendiente, 0)
   })
-  const gananciaNeta = computed(() => data.ganancias?.ganancia_neta ?? 0)
-  const totalPrestadoPeriodo = computed(() => data.ganancias?.total_prestado ?? 0)
-  const totalPerdidas = computed(() => data.perdidas?.total_perdidas ?? 0)
-  const cantidadPerdidos = computed(() => data.perdidas?.cantidad_prestamos_perdidos ?? 0)
+  const gananciaNeta = computed(() => data.resumen?.ganancia_neta ?? data.ganancias?.ganancia_neta ?? 0)
+  const totalPrestadoPeriodo = computed(() => data.resumen?.total_prestado_periodo ?? data.ganancias?.total_prestado ?? 0)
+  const totalPerdidas = computed(() => data.resumen?.total_perdidas ?? data.perdidas?.total_perdidas ?? 0)
+  const cantidadPerdidos = computed(() => data.resumen?.cantidad_prestamos_perdidos ?? data.perdidas?.cantidad_prestamos_perdidos ?? 0)
 
   const distribucionEstados = computed(() => {
     const estados = data.resumen?.prestamos_por_estado
@@ -53,26 +56,41 @@ export function useDashboard() {
   const moraPendiente = computed(() => data.resumen?.mora_pendiente ?? 0)
   const cobroDelDia = computed(() => data.resumen?.cobro_del_dia ?? 0)
 
+  async function cargarConsultasMultiples() {
+    const [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult] = await Promise.allSettled([
+      getCapital(),
+      getPrestamos({ estado: 'activo', limit: 100 }),
+      getReporteGanancias(),
+      getReportePerdidas(),
+      getDashboardResumen()
+    ])
+    if (capitalResult.status === 'fulfilled') data.capital = capitalResult.value
+    if (prestamosResult.status === 'fulfilled') data.prestamosActivos = prestamosResult.value.items
+    if (gananciasResult.status === 'fulfilled') data.ganancias = gananciasResult.value
+    if (perdidasResult.status === 'fulfilled') data.perdidas = perdidasResult.value
+    if (resumenResult.status === 'fulfilled') data.resumen = resumenResult.value
+
+    const failed = [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult].filter(r => r.status === 'rejected')
+    if (failed.length > 0) {
+      error.value = 'Algunos datos no pudieron cargarse.'
+    }
+  }
+
   async function fetch() {
     loading.value = true
     error.value = null
     try {
-      const [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult] = await Promise.allSettled([
-        getCapital(),
-        getPrestamos({ estado: 'activo', limit: 100 }),
-        getReporteGanancias(),
-        getReportePerdidas(),
-        getDashboardResumen()
-      ])
-      if (capitalResult.status === 'fulfilled') data.capital = capitalResult.value
-      if (prestamosResult.status === 'fulfilled') data.prestamosActivos = prestamosResult.value.items
-      if (gananciasResult.status === 'fulfilled') data.ganancias = gananciasResult.value
-      if (perdidasResult.status === 'fulfilled') data.perdidas = perdidasResult.value
-      if (resumenResult.status === 'fulfilled') data.resumen = resumenResult.value
-
-      const failed = [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult].filter(r => r.status === 'rejected')
-      if (failed.length > 0) {
-        error.value = 'Algunos datos no pudieron cargarse.'
+      try {
+        // RF-059: una sola consulta resuelve todos los indicadores del tablero
+        const resumen = await getDashboardResumen()
+        data.resumen = resumen
+        data.capital = { monto_total: resumen.capital_actual } as Capital
+        data.ganancias = null
+        data.perdidas = null
+        data.prestamosActivos = []
+      } catch {
+        // Degradación al esquema de consultas múltiples
+        await cargarConsultasMultiples()
       }
     } catch {
       error.value = 'No se pudo cargar el dashboard.'
