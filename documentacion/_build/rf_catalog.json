@@ -37,7 +37,7 @@
  "RF-008": {
   "nombre": "Protección de rutas en el frontend",
   "prioridad": "Máxima",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-009": {
   "nombre": "Autorización por rol en el backend",
@@ -64,16 +64,16 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
- "RF-014": {
-  "nombre": "Búsqueda por nombre, cédula o teléfono",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
- "RF-015": {
-  "nombre": "Detalle del cliente con historial",
-  "prioridad": "Alta",
-  "estado": "Pendiente"
- },
+  "RF-014": {
+   "nombre": "Búsqueda por nombre, cédula o teléfono",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
+  "RF-015": {
+   "nombre": "Detalle del cliente con historial",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
  "RF-016": {
   "nombre": "Edición y baja de clientes",
   "prioridad": "Alta",
@@ -199,11 +199,11 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
- "RF-041": {
-  "nombre": "Historial global de pagos",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
+  "RF-041": {
+   "nombre": "Historial global de pagos",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
  "RF-042": {
   "nombre": "Reversión o ajuste de pagos",
   "prioridad": "Alta",
@@ -219,21 +219,21 @@
   "prioridad": "Máxima",
   "estado": "Completada"
  },
- "RF-045": {
-  "nombre": "Consulta de moras por préstamo",
-  "prioridad": "Alta",
-  "estado": "Pendiente"
- },
- "RF-046": {
-  "nombre": "Procesamiento manual de moras",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
- "RF-047": {
-  "nombre": "Gestión de cobranza",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
+  "RF-045": {
+   "nombre": "Consulta de moras por préstamo",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
+  "RF-046": {
+   "nombre": "Procesamiento manual de moras",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
+  "RF-047": {
+   "nombre": "Gestión de cobranza",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
  "RF-048": {
   "nombre": "Recordatorios de cobro",
   "prioridad": "Alta",
@@ -279,16 +279,16 @@
   "prioridad": "Alta",
   "estado": "Completada"
  },
- "RF-057": {
-  "nombre": "Distribución de cartera por estado",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
- "RF-058": {
-  "nombre": "Indicadores de cobranza y mora",
-  "prioridad": "Alta",
-  "estado": "Parcial"
- },
+  "RF-057": {
+   "nombre": "Distribución de cartera por estado",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
+  "RF-058": {
+   "nombre": "Indicadores de cobranza y mora",
+   "prioridad": "Alta",
+   "estado": "Completada"
+  },
  "RF-059": {
   "nombre": "Consulta consolidada del tablero",
   "prioridad": "Media",
@@ -347,7 +347,7 @@
  "RF-070": {
   "nombre": "Paginación consistente",
   "prioridad": "Alta",
-  "estado": "Parcial"
+  "estado": "Completada"
  },
  "RF-071": {
   "nombre": "Operación sin conexión",
@@ -367,11 +367,11 @@
  "RF-074": {
   "nombre": "Seguridad de la plataforma",
   "prioridad": "Máxima",
-  "estado": "Pendiente"
+  "estado": "Completada"
  },
  "RF-075": {
   "nombre": "Respaldo y recuperación",
   "prioridad": "Máxima",
-  "estado": "Pendiente"
+  "estado": "Completada"
  }
 }

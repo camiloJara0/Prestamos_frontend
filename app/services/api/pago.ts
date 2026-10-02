@@ -1,7 +1,7 @@
-import type { Pago, PagoCreate } from '#shared/types/pago'
-import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
+import type { Pago, PagoCreate, FiltrosHistorialPagos } from '#shared/types/pago'
+import type { RespuestaPaginada } from '#shared/types/paginacion'
 
-export const getPagos = async (params: PaginacionParams = {}) => {
+export const getPagos = async (params: FiltrosHistorialPagos = {}) => {
   return useApi().apiGet<RespuestaPaginada<Pago>>('/pagos', { query: { ...params } })
 }
 

@@ -1,15 +1,18 @@
 import type { Prestamo } from '#shared/types/prestamo'
 import type { ReporteGanancias, ReportePerdidas } from '#shared/types/reporte'
 import type { Capital } from '#shared/types/capital'
+import type { DashboardResumen } from '#shared/types/dashboard'
 import { getPrestamos } from '~/services/api/prestamo'
 import { getReporteGanancias, getReportePerdidas } from '~/services/api/reporte'
 import { getCapital } from '~/services/api/capital'
+import { getDashboardResumen } from '~/services/api/dashboard'
 
 export type DashboardState = {
   capital: Capital | null
   prestamosActivos: Prestamo[]
   ganancias: ReporteGanancias | null
   perdidas: ReportePerdidas | null
+  resumen: DashboardResumen | null
 }
 
 export function useDashboard() {
@@ -19,7 +22,8 @@ export function useDashboard() {
     capital: null,
     prestamosActivos: [],
     ganancias: null,
-    perdidas: null
+    perdidas: null,
+    resumen: null
   })
 
   const totalActivos = computed(() => data.prestamosActivos.length)
@@ -33,40 +37,40 @@ export function useDashboard() {
   const cantidadPerdidos = computed(() => data.perdidas?.cantidad_prestamos_perdidos ?? 0)
 
   const distribucionEstados = computed(() => {
-    const prestamos = data.prestamosActivos
-    if (!prestamos.length) return []
-    const estados = ['activo', 'pagado', 'perdido', 'renovado'] as const
-    const counts: Record<string, number> = {}
-    for (const e of estados) counts[e] = 0
-    for (const p of prestamos) {
-      counts[p.estado] = (counts[p.estado] ?? 0) + 1
-    }
+    const estados = data.resumen?.prestamos_por_estado
+    if (!estados) return []
     const colorMap: Record<string, string> = { activo: '#7c3aed', pagado: '#10b981', perdido: '#ef4444', renovado: '#f59e0b' }
-    return estados
-      .filter(e => (counts[e] ?? 0) > 0)
+    return (['activo', 'pagado', 'perdido', 'renovado'] as const)
+      .filter(e => estados[e] > 0)
       .map(e => ({
         label: e.charAt(0).toUpperCase() + e.slice(1),
-        value: counts[e] ?? 0,
+        value: estados[e],
         color: colorMap[e] ?? '#6b7280'
       }))
   })
+
+  const montoVencido = computed(() => data.resumen?.monto_vencido ?? 0)
+  const moraPendiente = computed(() => data.resumen?.mora_pendiente ?? 0)
+  const cobroDelDia = computed(() => data.resumen?.cobro_del_dia ?? 0)
 
   async function fetch() {
     loading.value = true
     error.value = null
     try {
-      const [capitalResult, prestamosResult, gananciasResult, perdidasResult] = await Promise.allSettled([
+      const [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult] = await Promise.allSettled([
         getCapital(),
         getPrestamos({ estado: 'activo', limit: 100 }),
         getReporteGanancias(),
-        getReportePerdidas()
+        getReportePerdidas(),
+        getDashboardResumen()
       ])
       if (capitalResult.status === 'fulfilled') data.capital = capitalResult.value
       if (prestamosResult.status === 'fulfilled') data.prestamosActivos = prestamosResult.value.items
       if (gananciasResult.status === 'fulfilled') data.ganancias = gananciasResult.value
       if (perdidasResult.status === 'fulfilled') data.perdidas = perdidasResult.value
+      if (resumenResult.status === 'fulfilled') data.resumen = resumenResult.value
 
-      const failed = [capitalResult, prestamosResult, gananciasResult, perdidasResult].filter(r => r.status === 'rejected')
+      const failed = [capitalResult, prestamosResult, gananciasResult, perdidasResult, resumenResult].filter(r => r.status === 'rejected')
       if (failed.length > 0) {
         error.value = 'Algunos datos no pudieron cargarse.'
       }
@@ -88,6 +92,9 @@ export function useDashboard() {
     totalPerdidas,
     cantidadPerdidos,
     distribucionEstados,
+    montoVencido,
+    moraPendiente,
+    cobroDelDia,
     fetch
   }
 }

@@ -1,7 +1,11 @@
 import type { Cliente, ClienteCreate } from '#shared/types/clientes'
 import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
-export const getClientes = async (params: PaginacionParams = {}) => {
+export type FiltrosClientes = PaginacionParams & {
+  q?: string
+}
+
+export const getClientes = async (params: FiltrosClientes = {}) => {
   return useApi().apiGet<RespuestaPaginada<Cliente>>('/clientes', { query: { ...params } })
 }
 

@@ -58,7 +58,7 @@ async function procesarMorasAhora() {
   try {
     const resultado = await procesar()
     toast.add({
-      title: `Moras procesadas: ${resultado.moras_actualizadas.length} actualizadas`,
+      title: `Moras procesadas: ${resultado.total_moras_procesadas} actualizadas`,
       color: 'success'
     })
   } catch (e) {

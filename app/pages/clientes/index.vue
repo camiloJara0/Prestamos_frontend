@@ -10,7 +10,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
-const { clientes, loading, error, fetch, crear, actualizar, eliminar } = useClientes()
+const { clientes, loading, error, fetch, recargar, crear, actualizar, eliminar } = useClientes()
+const router = useRouter()
 
 const modalAbierto = ref(false)
 const clienteEditando = ref<Cliente | null>(null)
@@ -19,11 +20,25 @@ const enviando = ref(false)
 const errorCampo = ref<Record<string, string>>({})
 const formRef = ref<{ submit: () => void } | null>(null)
 const toast = useToast()
+const busqueda = ref('')
 
 async function inicializar() {
   await fetch()
 }
 inicializar()
+
+async function buscarEnServidor() {
+  await fetch({ page: 1, limit: 100, q: busqueda.value.trim() || undefined })
+}
+
+async function limpiarBusqueda() {
+  busqueda.value = ''
+  await fetch()
+}
+
+function verDetalle(clienteId: number) {
+  router.push(`/clientes/${clienteId}`)
+}
 
 function abrirNuevo() {
   clienteEditando.value = null
@@ -90,6 +105,17 @@ const columns = [
     header: 'Acciones',
     component: UButton,
     componentProps: (row: Record<string, unknown>) => ({
+      icon: 'i-lucide-eye',
+      color: 'primary',
+      variant: 'ghost',
+      label: 'Detalle',
+      onClick: () => verDetalle(Number(row.id))
+    })
+  },
+  {
+    header: 'Editar',
+    component: UButton,
+    componentProps: (row: Record<string, unknown>) => ({
       icon: 'i-lucide-pencil',
       color: 'neutral',
       variant: 'ghost',
@@ -106,7 +132,45 @@ const filtroGlobal = (row: Record<string, unknown>, termino: string) => {
 </script>
 
 <template>
-  <div class="p-6">
+  <div class="p-6 space-y-4">
+    <UiPageHeader
+      titulo="Gestión de Clientes"
+      descripcion="Padrón de clientes con búsqueda por nombre, cédula o teléfono."
+      icono="i-lucide-users"
+    />
+
+    <UCard>
+      <div class="flex flex-wrap items-end gap-3">
+        <UFormField
+          label="Búsqueda"
+          class="flex-1 min-w-64"
+        >
+          <UInput
+            v-model="busqueda"
+            placeholder="Nombre, cédula o teléfono"
+            icon="i-lucide-search"
+            class="w-full"
+            @keyup.enter="buscarEnServidor"
+          />
+        </UFormField>
+        <UButton
+          color="primary"
+          icon="i-lucide-search"
+          @click="buscarEnServidor"
+        >
+          Buscar
+        </UButton>
+        <UButton
+          color="neutral"
+          variant="outline"
+          icon="i-lucide-x"
+          @click="limpiarBusqueda"
+        >
+          Limpiar
+        </UButton>
+      </div>
+    </UCard>
+
     <DataTable
       titulo="Gestión de Clientes"
       :data="clientes as Record<string, unknown>[]"
@@ -116,9 +180,9 @@ const filtroGlobal = (row: Record<string, unknown>, termino: string) => {
       :filtros="[{ columna: 'estado', placeholder: 'Estado', datos: [{ label: 'Activo', value: 'activo' }, { label: 'Inactivo', value: 'inactivo' }] }]"
       :filtro-global="filtroGlobal"
       :agregar="abrirNuevo"
-      :llamar-datos="fetch"
+      :llamar-datos="recargar"
       exportar-nombre="clientes"
-      @retry="fetch"
+      @retry="recargar"
     />
 
     <UModal

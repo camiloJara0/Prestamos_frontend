@@ -28,3 +28,29 @@ export type FiltrosReporte = {
   mes?: number
   anio?: number
 }
+
+export type CuotaCobranza = {
+  cuota_id: number
+  prestamo_id: number
+  cliente_nombre: string
+  numero_cuota: number
+  fecha_vencimiento: string
+  valor_cuota: number
+  estado: string
+  dias_atraso: number
+  mora?: number
+  saldo?: number
+}
+
+export type ReporteCobranza = {
+  periodo: string
+  total_cuotas_por_vencer: number
+  monto_por_vencer: number
+  total_cuotas_vencidas: number
+  monto_vencido: number
+  total_cuotas_pagadas: number
+  monto_pagado: number
+  cuotas_por_vencer: CuotaCobranza[]
+  cuotas_vencidas: CuotaCobranza[]
+  cuotas_pagadas: CuotaCobranza[]
+}

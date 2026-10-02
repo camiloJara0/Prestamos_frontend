@@ -2,29 +2,25 @@ import type { Mora, MoraCreateUpdate, RespuestaProcesarMoras } from '#shared/typ
 import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
 export const getMoras = async (params: PaginacionParams = {}) => {
-  return useApi().apiGet<RespuestaPaginada<Mora>>('/moras', { query: { ...params } })
+  return useApi().apiGet<RespuestaPaginada<Mora>>('/mora', { query: { ...params } })
 }
 
 export const getMorasByPrestamo = async (prestamoId: number) => {
-  return useApi().apiGet<Mora[]>(`/moras/prestamo/${prestamoId}`)
+  return useApi().apiGet<Mora[]>(`/mora/prestamo/${prestamoId}`)
 }
 
 export const getMoraById = async (id: number) => {
-  return useApi().apiGet<Mora>(`/moras/${id}`)
-}
-
-export const createMora = async (data: MoraCreateUpdate) => {
-  return useApi().apiPost<Mora>('/moras', data)
+  return useApi().apiGet<Mora>(`/mora/${id}`)
 }
 
 export const updateMora = async (id: number, data: MoraCreateUpdate) => {
-  return useApi().apiPut<Mora>(`/moras/${id}`, data)
+  return useApi().apiPut<Mora>(`/mora/${id}`, data)
 }
 
 export const deleteMora = async (id: number) => {
-  return useApi().apiDelete<{ mensaje: string }>(`/moras/${id}`)
+  return useApi().apiDelete<{ mensaje: string }>(`/mora/${id}`)
 }
 
 export const procesarMoras = async () => {
-  return useApi().apiPost<RespuestaProcesarMoras>('/moras/procesar-moras', {})
+  return useApi().apiPost<RespuestaProcesarMoras>('/mora/procesar-manual', {})
 }

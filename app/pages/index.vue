@@ -20,6 +20,9 @@ const {
   totalPerdidas,
   cantidadPerdidos,
   distribucionEstados,
+  montoVencido,
+  moraPendiente,
+  cobroDelDia,
   fetch: fetchDashboard
 } = useDashboard()
 
@@ -129,13 +132,46 @@ fetchDashboard()
           icono="i-lucide-alert-octagon"
           color="error"
         />
+        <USkeleton
+          v-if="loading"
+          class="h-22 rounded-xl"
+        />
+        <UiStatCard
+          v-else
+          titulo="Monto vencido"
+          :valor="formateo.formatoMoneda(montoVencido)"
+          icono="i-lucide-calendar-x"
+          color="error"
+        />
+        <USkeleton
+          v-if="loading"
+          class="h-22 rounded-xl"
+        />
+        <UiStatCard
+          v-else
+          titulo="Mora pendiente"
+          :valor="formateo.formatoMoneda(moraPendiente)"
+          icono="i-lucide-percent"
+          color="warning"
+        />
+        <USkeleton
+          v-if="loading"
+          class="h-22 rounded-xl"
+        />
+        <UiStatCard
+          v-else
+          titulo="Cobro del día"
+          :valor="formateo.formatoMoneda(cobroDelDia)"
+          icono="i-lucide-circle-dollar-sign"
+          color="success"
+        />
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <UCard>
           <template #header>
             <h3 class="font-bold">
-              Distribución de préstamos
+              Distribución de cartera
             </h3>
           </template>
           <USkeleton
@@ -169,7 +205,7 @@ fetchDashboard()
               @click="() => { router.push('/prestamos/nuevo') }"
             />
             <UButton
-              label="Registrar pago"
+              label="Historial de pagos"
               icon="i-lucide-dollar-sign"
               color="success"
               class="justify-start"
@@ -194,7 +230,7 @@ fetchDashboard()
           </div>
           <template #footer>
             <p class="text-xs text-gray-400">
-              Los datos históricos por mes requieren el endpoint de dashboard (REQUIERE_BACKEND B3).
+              Indicadores calculados por el servidor sobre el cierre del día en curso.
             </p>
           </template>
         </UCard>

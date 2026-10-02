@@ -17,5 +17,6 @@ export type MoraCreateUpdate = {
 }
 
 export type RespuestaProcesarMoras = {
-  moras_actualizadas: number[]
+  mensaje: string
+  total_moras_procesadas: number
 }

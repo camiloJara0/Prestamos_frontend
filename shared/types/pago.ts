@@ -18,6 +18,18 @@ export type Pago = {
   motivo_devolucion?: string | null
   created_at?: string
   updated_at?: string
+  // Nombres resueltos solo en el historial global (RF-041)
+  cliente_nombre?: string | null
+  tipo_pago_nombre?: string | null
+}
+
+export type FiltrosHistorialPagos = {
+  page?: number
+  limit?: number
+  cliente_id?: number
+  tipo_pago_id?: number
+  fecha_desde?: string
+  fecha_hasta?: string
 }
 
 export type PagoCreate = {

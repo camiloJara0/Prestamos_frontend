@@ -1,4 +1,4 @@
-import type { ReporteGanancias, ReportePerdidas, FiltrosReporte, ReporteTipo, ReporteFormato } from '#shared/types/reporte'
+import type { ReporteGanancias, ReportePerdidas, ReporteCobranza, FiltrosReporte, ReporteTipo, ReporteFormato } from '#shared/types/reporte'
 
 export const getReporteGanancias = async (params: FiltrosReporte = {}) => {
   return useApi().apiGet<ReporteGanancias>('/reportes/ganancias', { query: { ...params } })
@@ -6,6 +6,10 @@ export const getReporteGanancias = async (params: FiltrosReporte = {}) => {
 
 export const getReportePerdidas = async (params: FiltrosReporte = {}) => {
   return useApi().apiGet<ReportePerdidas>('/reportes/perdidas', { query: { ...params } })
+}
+
+export const getReporteCobranza = async (params: { desde?: string, hasta?: string } = {}) => {
+  return useApi().apiGet<ReporteCobranza>('/reportes/cobranza', { query: { ...params } })
 }
 
 export const descargarReporte = async (tipo: ReporteTipo, formato: ReporteFormato, params: FiltrosReporte = {}) => {

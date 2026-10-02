@@ -41,7 +41,7 @@ const conicGradient = computed(() => {
           :style="{ backgroundColor: item.color }"
         />
         <span class="text-gray-600">{{ item.label }}</span>
-        <span class="font-medium ml-auto">{{ item.value }}</span>
+        <span class="font-medium ml-auto">{{ item.value }} <span class="text-gray-400 font-normal">({{ Math.round((item.value / total) * 100) }}%)</span></span>
       </div>
     </div>
   </div>
