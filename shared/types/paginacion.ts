@@ -1,9 +1,12 @@
 export type PaginacionParams = {
-  skip?: number
+  page?: number
   limit?: number
 }
 
-export type ListadoResult<T> = {
-  data: T[]
+export type RespuestaPaginada<T> = {
+  items: T[]
   total: number
+  page: number
+  pages: number
+  limit: number
 }

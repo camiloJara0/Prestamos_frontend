@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-  modelValue?: string | null
+  modelValue?: number | string | null
   label?: string
   placeholder?: string
   error?: string | boolean | undefined
@@ -48,7 +48,13 @@ const alEscribir = (event: Event) => {
 watch(
   () => props.modelValue,
   (valor) => {
-    texto.value = valor != null ? formatear(parseInt(valor)) : ''
+    if (valor == null) {
+      texto.value = ''
+    } else if (typeof valor === 'number') {
+      texto.value = valor > 0 ? formatear(valor) : ''
+    } else {
+      texto.value = valor ? formatear(Number(valor)) : ''
+    }
   },
   { immediate: true }
 )

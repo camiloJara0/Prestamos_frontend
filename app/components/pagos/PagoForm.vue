@@ -11,7 +11,7 @@ const props = defineProps<{
   cuotaInicial?: PrestamoCuota | null
   tiposPago?: TipoPago[]
 }>()
-console.log(props.tiposPago)
+
 const emit = defineEmits<{
   guardar: [data: {
     prestamo_id: number
@@ -129,9 +129,10 @@ async function buscarPrestamo() {
   try {
     const { getPrestamos } = await import('~/services/api/prestamo')
     const { getPrestamoById } = await import('~/services/api/prestamo')
-    const resultados = await getPrestamos({ busqueda: termino, estado: 'activo', limit: 10 })
-    if (resultados.length === 1) {
-      const id = resultados[0]?.id
+    const resultado = await getPrestamos({ busqueda: termino, estado: 'activo', limit: 10 })
+    const items = resultado.items ?? []
+    if (items.length === 1) {
+      const id = items[0]?.id
       if (id == null) return
       const detalle = await getPrestamoById(id)
       prestamoSeleccionado.value = detalle
@@ -140,7 +141,7 @@ async function buscarPrestamo() {
       if (cuotasPendientes.value.length === 1 && cuotasPendientes.value[0]) {
         form.cuota_id = cuotasPendientes.value[0].id
       }
-    } else if (resultados.length > 1) {
+    } else if (items.length > 1) {
       busquedaAbierta.value = true
     }
   } finally {
@@ -209,6 +210,7 @@ watch(() => props.cuotaInicial, (c) => {
   >
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <UFormField
+        v-if="!prestamoSeleccionado"
         label="Buscar préstamo *"
         :error="errores.prestamo_id"
         class="sm:col-span-2"

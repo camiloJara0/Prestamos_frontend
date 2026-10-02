@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import { calcularPrestamo } from '~/utils/calculadoraPrestamo'
 import type { Prestamo } from '#shared/types/prestamo'
+import ModalDialog from '../ui/ModalDialog.vue'
 
 const props = defineProps<{
   open: boolean
@@ -185,7 +186,7 @@ async function confirmar() {
 
       <div
         v-if="calculo"
-        class="mt-4 rounded-xl border border-(--color-primary-500)/20 p-4 bg-(--color-primary-500)/5"
+        class="mt-4 rounded-xl border border-primary-500/20 p-4 bg-primary-500/5"
       >
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
           <div>
@@ -222,7 +223,7 @@ async function confirmar() {
           color="neutral"
           variant="outline"
           :disabled="enviando"
-          @click="isOpen = false"
+          @click="() => { isOpen = false }"
         />
         <UButton
           label="Renovar"

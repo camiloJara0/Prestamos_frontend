@@ -52,7 +52,7 @@ export type PrestamoFiltros = {
   fecha_desde?: string
   fecha_hasta?: string
   busqueda?: string
-  skip?: number
+  page?: number
   limit?: number
 }
 

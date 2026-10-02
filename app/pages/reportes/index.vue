@@ -20,11 +20,11 @@ const {
 
 const tabActiva = ref<'ganancias' | 'perdidas'>('ganancias')
 
-const filtroMes = ref('')
-const filtroAnio = ref('')
+const filtroMes = ref('#')
+const filtroAnio = ref('#')
 
 const meses = [
-  { label: 'Todos', value: '' },
+  { label: 'Todos', value: '#' },
   { label: 'Enero', value: '1' },
   { label: 'Febrero', value: '2' },
   { label: 'Marzo', value: '3' },
@@ -41,7 +41,7 @@ const meses = [
 
 const anioActual = new Date().getFullYear()
 const aniosDisponibles = computed(() => {
-  const lista: { label: string, value: string }[] = [{ label: 'Todos', value: '' }]
+  const lista: { label: string, value: string }[] = [{ label: 'Todos', value: '#' }]
   for (let y = anioActual; y >= anioActual - 5; y--) {
     lista.push({ label: String(y), value: String(y) })
   }
@@ -50,8 +50,8 @@ const aniosDisponibles = computed(() => {
 
 function paramsFiltro() {
   const params: Record<string, number> = {}
-  if (filtroMes.value !== '') params.mes = Number(filtroMes.value)
-  if (filtroAnio.value !== '') params.anio = Number(filtroAnio.value)
+  if (filtroMes.value !== '#') params.mes = Number(filtroMes.value)
+  if (filtroAnio.value !== '#') params.anio = Number(filtroAnio.value)
   return params
 }
 
@@ -60,8 +60,8 @@ function aplicarFiltros() {
 }
 
 function limpiarFiltros() {
-  filtroMes.value = ''
-  filtroAnio.value = ''
+  filtroMes.value = '#'
+  filtroAnio.value = '#'
   fetchTodos()
 }
 
@@ -79,31 +79,26 @@ fetchTodos()
 
 <template>
   <div class="p-6 space-y-4">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 class="text-2xl font-bold">
-          Reportes
-        </h1>
-        <p class="text-sm text-gray-500">
-          Ganancias, pérdidas y exportación.
-        </p>
-      </div>
-    </div>
+    <UiPageHeader
+      titulo="Reportes"
+      descripcion="Ganancias, pérdidas y exportación."
+      icono="i-lucide-bar-chart-2"
+    />
 
     <UCard>
       <div class="flex flex-wrap items-end gap-3">
-        <UField label="Mes">
+        <UFormField label="Mes">
           <USelect
             v-model="filtroMes"
             :items="meses"
           />
-        </UField>
-        <UField label="Año">
+        </UFormField>
+        <UFormField label="Año">
           <USelect
             v-model="filtroAnio"
             :items="aniosDisponibles"
           />
-        </UField>
+        </UFormField>
         <UButton
           color="primary"
           icon="i-lucide-search"
@@ -143,7 +138,7 @@ fetchTodos()
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -154,7 +149,7 @@ fetchTodos()
             />
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -165,7 +160,7 @@ fetchTodos()
             />
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -176,7 +171,7 @@ fetchTodos()
             />
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -187,7 +182,7 @@ fetchTodos()
             />
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -232,7 +227,7 @@ fetchTodos()
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else
@@ -244,7 +239,7 @@ fetchTodos()
             />
             <USkeleton
               v-if="loading"
-              class="h-[88px] rounded-xl"
+              class="h-22 rounded-xl"
             />
             <UiStatCard
               v-else

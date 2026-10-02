@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import EmptyState from '~/components/ui/EmptyState.vue'
 import { useDashboard } from '~/composables/domain/useDashboard'
 
 definePageMeta({

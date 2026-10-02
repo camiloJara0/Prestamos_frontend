@@ -55,28 +55,28 @@ async function ingresar() {
 </script>
 
 <template>
-  <div class="glass w-full max-w-xl rounded-2xl p-8 shadow-2xl">
-    <div class="flex flex-col items-center gap-2 mb-6">
-      <div class="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
+  <div class="glass w-full max-w-xl rounded-3xl p-8 shadow-2xl">
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-16 h-16 rounded-2xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
         <AppLogo />
       </div>
-      <h2 class="text-2xl font-bold text-white">
+      <h2 class="text-2xl font-bold text-white font-display">
         Inicia sesión
       </h2>
-      <p class="text-sm text-purple-200/80">
+      <p class="text-sm text-purple-200/70">
         LoanSoft · Gestión de Préstamos
       </p>
     </div>
 
     <UAlert
       v-if="errorForm"
-      class="mb-4"
+      class="mb-5"
       color="error"
       :title="errorForm"
     />
 
     <form
-      class="space-y-4"
+      class="space-y-5"
       @submit.prevent="ingresar"
     >
       <UFormField
@@ -89,6 +89,7 @@ async function ingresar() {
           placeholder="admin@test.com"
           icon="i-lucide-mail"
           autocomplete="email"
+          size="lg"
           :ui="{ root: 'w-full' }"
         />
       </UFormField>
@@ -102,6 +103,7 @@ async function ingresar() {
           placeholder="••••••"
           icon="i-lucide-lock"
           autocomplete="current-password"
+          size="lg"
           :ui="{ root: 'w-full' }"
         />
       </UFormField>
@@ -122,7 +124,7 @@ async function ingresar() {
 <style scoped>
 .glass {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 </style>

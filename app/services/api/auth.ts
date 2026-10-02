@@ -16,3 +16,7 @@ export function meRequest() {
 export function logoutRequest() {
   return useApi().apiPost<RespuestaLogout>('/auth/logout', undefined, { retry: false })
 }
+
+export function changePassword(payload: { password_actual: string, password_nuevo: string }) {
+  return useApi().apiPost<{ message: string }>('/auth/change-password', payload)
+}

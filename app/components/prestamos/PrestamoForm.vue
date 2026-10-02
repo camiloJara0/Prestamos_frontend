@@ -197,7 +197,7 @@ defineExpose({ submit, validar, form })
           v-model="form.tipo_prestamo_id"
           :items="tiposPrestamo.filter(t => t.estado === 'activo').map(t => ({ label: t.nombre, value: t.id }))"
           placeholder="Selecciona un tipo"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
 
@@ -205,7 +205,7 @@ defineExpose({ submit, validar, form })
         <UInput
           v-model="form.fecha_prestamo"
           type="date"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
 
@@ -219,7 +219,7 @@ defineExpose({ submit, validar, form })
           min="0"
           step="0.01"
           placeholder="Ej: 1000000"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
 
@@ -233,7 +233,7 @@ defineExpose({ submit, validar, form })
           min="0"
           step="0.01"
           placeholder="Ej: 2.5"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
 
@@ -247,7 +247,7 @@ defineExpose({ submit, validar, form })
           min="1"
           step="1"
           placeholder="Ej: 12"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
 
@@ -257,7 +257,7 @@ defineExpose({ submit, validar, form })
         <UInput
           v-model="form.observaciones"
           placeholder="Opcional"
-            class="w-full"
+          class="w-full"
         />
       </UFormField>
     </div>

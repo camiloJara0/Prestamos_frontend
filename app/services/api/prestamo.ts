@@ -1,7 +1,8 @@
 import type { Prestamo, PrestamoCreate, PrestamoDetalle, PrestamoFiltros, RenovacionCreate, RespuestaMarcarPerdido } from '#shared/types/prestamo'
+import type { RespuestaPaginada } from '#shared/types/paginacion'
 
-export const getPrestamos = async (filtros: PrestamoFiltros = {}) => {
-  return useApi().apiGet<Prestamo[]>('/prestamos', { query: filtros })
+export const getPrestamos = async (filtros: PrestamoFiltros = {}): Promise<RespuestaPaginada<Prestamo>> => {
+  return useApi().apiGet<RespuestaPaginada<Prestamo>>('/prestamos', { query: filtros })
 }
 
 export const getPrestamoById = async (id: number) => {

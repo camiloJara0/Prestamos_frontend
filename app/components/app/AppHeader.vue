@@ -3,6 +3,9 @@ const route = useRoute()
 const auth = useAuthStore()
 const varView = useVarView()
 const colorMode = useColorMode()
+const toast = useToast()
+const calculadoraAbierta = ref(false)
+const importarAbierto = ref(false)
 
 const breadcrumbs = computed(() => {
   const segments = route.path.split('/').filter(Boolean)
@@ -22,6 +25,9 @@ const userMenuItems = computed(() => [
   { label: auth.user?.nombre ?? 'Usuario', disabled: true },
   { label: auth.user?.email ?? '', disabled: true },
   { type: 'separator' as const },
+  { label: 'Perfil', icon: 'i-lucide-user', to: '/perfil' },
+  { label: 'Atajos (Ctrl+K)', icon: 'i-lucide-keyboard', click: () => {} },
+  { type: 'separator' as const },
   { label: 'Cerrar sesión', icon: 'i-lucide-log-out', click: () => cerrarSesion() }
 ])
 
@@ -29,21 +35,28 @@ async function cerrarSesion() {
   await auth.logout()
   await navigateTo('/login')
 }
+
+if (import.meta.client) {
+  window.addEventListener('controllerchange', () => {
+    toast.add({ title: 'Hay una nueva versión disponible', color: 'info', actions: [{ label: 'Recargar', color: 'primary', onClick: () => location.reload() }] })
+  })
+}
 </script>
 
 <template>
-  <header class="flex items-center gap-4 px-6 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+  <header class="flex items-center gap-4 px-5 py-3 border-b border-gray-100 dark:border-gray-800/50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl">
     <UButton
       icon="i-lucide-menu"
       color="neutral"
       variant="ghost"
+      size="sm"
       @click="varView.toggleAside()"
     />
 
-    <div class="flex items-center gap-1 text-sm text-gray-500 min-w-0">
+    <div class="flex items-center gap-1.5 text-sm text-gray-400 min-w-0">
       <NuxtLink
         to="/"
-        class="hover:text-primary truncate"
+        class="hover:text-primary transition-colors truncate"
       >
         <UIcon
           name="i-lucide-home"
@@ -56,12 +69,12 @@ async function cerrarSesion() {
       >
         <UIcon
           name="i-lucide-chevron-right"
-          class="w-3 h-3 shrink-0 text-gray-400"
+          class="w-3 h-3 shrink-0 text-gray-300 dark:text-gray-600"
         />
         <NuxtLink
           :to="crumb.to"
-          class="hover:text-primary truncate"
-          :class="{ 'text-gray-900 dark:text-white font-medium': i === breadcrumbs.length - 1 }"
+          class="hover:text-primary transition-colors truncate"
+          :class="{ 'text-gray-900 dark:text-white font-semibold': i === breadcrumbs.length - 1 }"
         >
           {{ crumb.label }}
         </NuxtLink>
@@ -77,12 +90,38 @@ async function cerrarSesion() {
       disabled
     />
 
+    <div class="h-5 w-px bg-gray-200 dark:bg-gray-700 hidden md:block" />
+
     <AppSyncIndicator />
+
+    <AppInstallPrompt />
+
+    <UButton
+      icon="i-lucide-calculator"
+      color="neutral"
+      variant="ghost"
+      size="sm"
+      @click="calculadoraAbierta = true"
+    />
+
+    <UButton
+      v-if="auth.isAdmin"
+      icon="i-lucide-upload"
+      color="neutral"
+      variant="ghost"
+      size="sm"
+      label="Importar"
+      class="hidden md:flex"
+      @click="importarAbierto = true"
+    />
+
+    <div class="h-5 w-px bg-gray-200 dark:bg-gray-700 hidden md:block" />
 
     <UButton
       :icon="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
       color="neutral"
       variant="ghost"
+      size="sm"
       @click="toggleColorMode"
     />
 
@@ -91,8 +130,19 @@ async function cerrarSesion() {
         color="neutral"
         variant="ghost"
         icon="i-lucide-user"
+        size="sm"
         :label="auth.user?.nombre ?? 'Usuario'"
       />
     </UDropdownMenu>
+
+    <AppGlobalCalculator
+      :open="calculadoraAbierta"
+      @update:open="calculadoraAbierta = $event"
+    />
+
+    <AppImportExtractModal
+      :open="importarAbierto"
+      @update:open="importarAbierto = $event"
+    />
   </header>
 </template>

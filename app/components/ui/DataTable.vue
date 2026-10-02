@@ -2,6 +2,7 @@
 import { computed, h, ref } from 'vue'
 import type { Component } from 'vue'
 import { UButton } from '#components'
+import EmptyState from './EmptyState.vue'
 
 export interface DataTableColumn {
   accessorKey?: string
@@ -58,7 +59,7 @@ const filtrosActivos = computed(() => {
 })
 
 const datosFiltrados = computed(() => {
-  let datos = [...props.data]
+  let datos = props.data.length ? [...props.data] : []
 
   if (busqueda.value.trim()) {
     const termino = busqueda.value.trim().toLowerCase()
@@ -179,10 +180,10 @@ const columnasTabla = computed(() =>
 
 <template>
   <div>
-    <UCard class="mb-3">
+    <UCard class="mb-4">
       <template #header>
         <div class="flex justify-between items-center gap-3">
-          <h3 class="font-bold text-lg truncate">
+          <h3 class="font-bold text-lg font-display tracking-tight truncate">
             {{ titulo }}
           </h3>
           <div class="flex flex-wrap justify-end gap-2">
@@ -202,7 +203,7 @@ const columnasTabla = computed(() =>
               color="neutral"
               icon="i-lucide-list-filter"
               size="sm"
-              @click="mostrarFiltros = !mostrarFiltros"
+              @click="() => { mostrarFiltros = !mostrarFiltros }"
             >
               Filtrar
             </UButton>
@@ -313,17 +314,17 @@ const columnasTabla = computed(() =>
         class="max-h-[62vh]"
       />
 
-      <div class="flex flex-wrap items-center justify-between gap-3 mt-3">
+      <div class="flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
         <UPagination
           v-model:page="paginaActual"
           :total="datosFiltrados.length"
           :items-per-page="itemsPorPagina"
           :max-pages="5"
         />
-        <div class="flex items-center gap-2 text-sm text-gray-500">
+        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
           <span>{{ datosFiltrados.length }} registros</span>
           <select
-            class="bg-transparent border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 text-sm"
+            class="bg-transparent border border-gray-200 dark:border-gray-700 rounded-lg px-2.5 py-1.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
             :value="itemsPorPagina"
             @change="cambiarItemsPorPagina(($event.target as HTMLSelectElement).value)"
           >

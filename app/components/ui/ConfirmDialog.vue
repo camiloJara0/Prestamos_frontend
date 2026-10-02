@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import ModalDialog from './ModalDialog.vue'
+
 const props = withDefaults(defineProps<{
   open: boolean
   titulo?: string
@@ -41,7 +43,7 @@ const isOpen = computed({
           color="neutral"
           variant="outline"
           :disabled="loading"
-          @click="isOpen = false"
+          @click="() => { isOpen = false }"
         />
         <UButton
           :label="confirmarTexto"

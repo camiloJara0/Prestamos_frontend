@@ -23,7 +23,7 @@ logs
 .env.*
 !.env.example
 
-test
+tests
 PLAN_FRONTEND_NUXT4.md
 BACKEND_ENDPOINTS.md
 BLUEPRINT_LOANSOFT.md

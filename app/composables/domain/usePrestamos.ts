@@ -6,13 +6,22 @@ export function usePrestamos() {
   const detalle = ref<PrestamoDetalle | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
-  const filtros = ref<PrestamoFiltros>({ estado: 'activo', skip: 0, limit: 50 })
+  const filtros = ref<PrestamoFiltros>({ estado: 'activo', page: 1, limit: 50 })
+  const paginacion = ref()
 
-  async function fetch(f = filtros.value) {
+  async function fetch(f = filtros.value, opciones: { anexar?: boolean } = {}) {
     loading.value = true
     error.value = null
     try {
-      prestamos.value = await getPrestamos(f)
+      const response = await getPrestamos(f)
+      prestamos.value = opciones.anexar
+        ? [...prestamos.value, ...response.items]
+        : response.items
+      paginacion.value = {
+        page: response.page,
+        pages: response.pages,
+        total: response.total
+      }
     } catch {
       error.value = 'No se pudieron cargar los préstamos.'
     } finally {

@@ -1,12 +1,8 @@
 import type { Cliente, ClienteCreate } from '#shared/types/clientes'
+import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
-export interface ListadoClientesParams {
-  skip?: number
-  limit?: number
-}
-
-export const getClientes = async (params: ListadoClientesParams = {}) => {
-  return useApi().apiGet<Cliente[]>('/clientes', { query: { ...params } })
+export const getClientes = async (params: PaginacionParams = {}) => {
+  return useApi().apiGet<RespuestaPaginada<Cliente>>('/clientes', { query: { ...params } })
 }
 
 export const getClienteById = async (id: number) => {

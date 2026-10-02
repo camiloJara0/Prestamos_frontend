@@ -1,14 +1,33 @@
 <script setup lang="ts">
 const syncStore = useSyncStore()
 const offline = useOffline()
+const auth = useAuthStore()
+const { needsOnboarding: _, verificarEstado, completado } = useOnboarding()
+const mostrarWizard = ref(false)
 
 onMounted(() => {
   offline.init()
   syncStore.setOnline(offline.isOnline.value)
+
+  if (auth.isAuthenticated && !completado.value) {
+    verificarEstado()
+    if (!completado.value) {
+      mostrarWizard.value = true
+    }
+  }
 })
 
 watch(() => offline.isOnline.value, (val) => {
   syncStore.setOnline(val)
+})
+
+watch(() => auth.isAuthenticated, (isAuth) => {
+  if (isAuth && !completado.value) {
+    verificarEstado()
+    if (!completado.value) {
+      mostrarWizard.value = true
+    }
+  }
 })
 
 onUnmounted(() => {
@@ -22,12 +41,20 @@ onUnmounted(() => {
 
     <div class="layout-content">
       <AppConnectionBanner />
-      <AppAppHeader />
+      <AppHeader />
 
       <main class="layout-main">
         <slot />
       </main>
     </div>
+
+    <AppCommandPalette />
+
+    <AppOnboardingWizard
+      :open="mostrarWizard"
+      @update:open="mostrarWizard = $event"
+      @completado="mostrarWizard = false"
+    />
   </div>
 </template>
 
@@ -37,7 +64,6 @@ onUnmounted(() => {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: #f5f4f9;
 }
 
 .layout-content {
@@ -51,8 +77,20 @@ onUnmounted(() => {
 .layout-main {
   flex: 1;
   overflow-y: auto;
-  background: #f5f4f9;
   scroll-behavior: smooth;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .layout-main {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-main {
+    padding: 2.5rem;
+  }
 }
 
 .layout-main::-webkit-scrollbar {

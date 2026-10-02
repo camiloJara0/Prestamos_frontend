@@ -82,6 +82,7 @@ export function useApi() {
 
   async function request<T>(path: string, options: ApiRequestOptions = {}): Promise<T> {
     const auth = useAuthStore()
+    const token = localStorage.getItem('loansoft:access')
     const { retry = true, responseType, ...fetchOptions } = options
     const isAuthPath = AUTH_PATHS.includes(path)
 
@@ -96,7 +97,7 @@ export function useApi() {
       })
 
     try {
-      return await execute(auth.accessToken)
+      return await execute(token)
     } catch (error) {
       const status = (error as FetchErrorLike).status || (error as FetchErrorLike).statusCode
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { z } from 'zod'
 import type { Prestamo } from '#shared/types/prestamo'
+import ModalDialog from '../ui/ModalDialog.vue'
 
 const props = defineProps<{
   open: boolean
@@ -109,7 +110,7 @@ async function confirmar() {
           color="neutral"
           variant="outline"
           :disabled="enviando"
-          @click="isOpen = false"
+          @click="() => { isOpen = false }"
         />
         <UButton
           label="Marcar como perdido"

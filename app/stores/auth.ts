@@ -45,6 +45,41 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    hidratarTokens() {
+      if (!import.meta.client) return
+      const access = localStorage.getItem(ACCESS_KEY)
+      const refresh = localStorage.getItem(REFRESH_KEY)
+      this.accessToken = access || null
+      this.refreshToken = refresh || null
+    },
+
+    async ensureSession(): Promise<boolean> {
+      if (import.meta.server) return false
+      this.hidratarTokens()
+      if (!this.accessToken && !this.refreshToken) {
+        this.status = 'unauthenticated'
+        return false
+      }
+      if (this.status === 'authenticated' && this.user) return true
+
+      try {
+        await this.fetchMe()
+        return true
+      } catch {
+        // La sesión pudo haber caducado: se intenta renovar una única vez.
+      }
+
+      try {
+        const token = await this.refresh()
+        if (!token) return false
+        await this.fetchMe()
+        return true
+      } catch {
+        await this.logout()
+        return false
+      }
+    },
+
     async login(email: string, password: string) {
       this.status = 'loading'
       try {

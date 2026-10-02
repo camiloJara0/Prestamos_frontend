@@ -20,7 +20,7 @@ export function useTiposPrestamo() {
     loading.value = true
     error.value = null
     try {
-      tipos.value = await getTiposPrestamo({ skip: 0, limit: 1000 })
+      tipos.value = (await getTiposPrestamo({ page: 1, limit: 100 })).items
     } catch {
       error.value = 'No se pudieron cargar los tipos de préstamo.'
     } finally {
@@ -57,7 +57,7 @@ export function useTiposPago() {
     loading.value = true
     error.value = null
     try {
-      tipos.value = await getTiposPago({ skip: 0, limit: 1000 })
+      tipos.value = (await getTiposPago({ page: 1, limit: 100 })).items
     } catch {
       error.value = 'No se pudieron cargar los tipos de pago.'
     } finally {

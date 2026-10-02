@@ -3,7 +3,6 @@ import type { TipoPrestamo, TipoPrestamoCreate } from '#shared/types/tipo_presta
 import { useTiposPrestamo } from '~/composables/domain/useTipos'
 import { UiEstadoBadge, UButton } from '#components'
 import DataTable from '~/components/ui/DataTable.vue'
-import ModalDialog from '~/components/ui/ModalDialog.vue'
 import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 
 definePageMeta({

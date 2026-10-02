@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { PrestamoCuota } from '#shared/types/prestamo_cuota'
 import { usePrestamos } from '~/composables/domain/usePrestamos'
-import { useMoras } from '~/composables/domain/useMoras'
-import { UiEstadoBadge } from '#components'
-import DataTable from '~/components/ui/DataTable.vue'
+import StatCard from '~/components/ui/StatCard.vue'
+import EstadoBadge from '~/components/ui/EstadoBadge.vue'
+import PrestamoTabs from '~/components/prestamos/PrestamoTabs.vue'
+import PrestamoPagoModal from '~/components/prestamos/PrestamoPagoModal.vue'
 import RenovarModal from '~/components/prestamos/RenovarModal.vue'
 import MarcarPerdidoModal from '~/components/prestamos/MarcarPerdidoModal.vue'
 
@@ -18,24 +20,29 @@ const formateo = useFormatters()
 const prestamoId = computed(() => Number(route.params.id))
 
 const { detalle, loading, error, byId, renovar, marcarPerdido } = usePrestamos()
-const { moras: morasPrestamo, fetchByPrestamo } = useMoras()
 
 const renovarAbierto = ref(false)
 const perdidoAbierto = ref(false)
-const enviando = ref(false)
+const pagoAbierto = ref(false)
+const cuotaSeleccionada = ref<PrestamoCuota | null>(null)
 
 async function inicializar() {
   await byId(prestamoId.value)
-  await fetchByPrestamo(prestamoId.value)
 }
 inicializar()
 
 const prestamo = computed(() => detalle.value)
-
-const cuotas = computed(() => prestamo.value?.cuotas ?? [])
-const pagos = computed(() => prestamo.value?.pagos ?? [])
-
 const esActivo = computed(() => prestamo.value?.estado === 'activo')
+
+function abrirPagoCuota(cuota: PrestamoCuota) {
+  cuotaSeleccionada.value = cuota
+  pagoAbierto.value = true
+}
+
+function abrirPagoGeneral() {
+  cuotaSeleccionada.value = null
+  pagoAbierto.value = true
+}
 
 async function confirmarRenovar(data: { porcentaje_interes: number, numero_cuotas: number, abono: number, fecha_renovacion: string, observaciones?: string | null }) {
   try {
@@ -50,8 +57,6 @@ async function confirmarRenovar(data: { porcentaje_interes: number, numero_cuota
     renovarAbierto.value = false
   } catch (e) {
     toast.add({ title: (e as { detail: string }).detail || 'No se pudo renovar el préstamo', color: 'error' })
-  } finally {
-    enviando.value = false
   }
 }
 
@@ -62,66 +67,13 @@ async function confirmarPerdido(data: { motivo?: string | null, fecha: string })
     perdidoAbierto.value = false
   } catch (e) {
     toast.add({ title: (e as { detail: string }).detail || 'No se pudo marcar el préstamo', color: 'error' })
-  } finally {
-    enviando.value = false
   }
 }
 
-const columnsCuotas = [
-  { accessorKey: 'numero_cuota', header: 'N°', sorted: true },
-  {
-    header: 'Vencimiento',
-    cell: (row: Record<string, unknown>) => formateo.formatoFecha(String(row.fecha_vencimiento))
-  },
-  {
-    header: 'Valor',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.valor_cuota))
-  },
-  {
-    header: 'Capital',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.capital))
-  },
-  {
-    header: 'Interés',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.interes))
-  },
-  {
-    header: 'Mora',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.mora))
-  },
-  {
-    header: 'Estado',
-    component: UiEstadoBadge,
-    componentProps: (row: Record<string, unknown>) => ({ entidad: 'cuota', estado: String(row.estado ?? '') })
-  }
-]
-
-const columnsPagos = [
-  {
-    header: 'Fecha',
-    cell: (row: Record<string, unknown>) => formateo.formatoFecha(String(row.fecha_pago))
-  },
-  {
-    header: 'Valor',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.valor_pagado))
-  },
-  {
-    header: 'Capital',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.capital_pagado))
-  },
-  {
-    header: 'Interés',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.interes_pagado))
-  },
-  {
-    header: 'Mora',
-    cell: (row: Record<string, unknown>) => formateo.formatoMoneda(Number(row.mora_pagada))
-  },
-  {
-    header: 'Tipo de pago',
-    accessorKey: 'tipo_pago_id'
-  }
-]
+async function despuesDePago() {
+  cuotaSeleccionada.value = null
+  await byId(prestamoId.value)
+}
 </script>
 
 <template>
@@ -186,10 +138,18 @@ const columnsPagos = [
         >
           <UButton
             color="primary"
+            icon="i-lucide-credit-card"
+            @click="abrirPagoGeneral"
+          >
+            Registrar pago
+          </UButton>
+          <UButton
+            color="primary"
             icon="i-lucide-refresh-cw"
+            variant="outline"
             @click="() => { renovarAbierto = true }"
           >
-            Renovar préstamo
+            Renovar
           </UButton>
           <UButton
             color="error"
@@ -197,7 +157,7 @@ const columnsPagos = [
             icon="i-lucide-flag"
             @click="() => { perdidoAbierto = true }"
           >
-            Marcar como perdido
+            Perdido
           </UButton>
         </div>
       </div>
@@ -246,65 +206,19 @@ const columnsPagos = [
         />
       </div>
 
-      <DataTable
-        titulo="Cuotas"
-        :data="cuotas as unknown as Record<string, unknown>[]"
-        :columns="columnsCuotas"
-        exportar-nombre="cuotas"
+      <PrestamoTabs
+        :prestamo="prestamo"
+        @pagar="abrirPagoCuota"
       />
-
-      <DataTable
-        titulo="Pagos registrados"
-        :data="pagos as unknown as Record<string, unknown>[]"
-        :columns="columnsPagos"
-        exportar-nombre="pagos"
-      />
-
-      <UCard>
-        <template #header>
-          <h3 class="font-bold">
-            Renovaciones
-          </h3>
-        </template>
-        <EmptyState
-          icono="i-lucide-history"
-          titulo="Sin historial de renovaciones"
-          descripcion="El detalle no incluye el historial de renovaciones. Este dato requiere un endpoint específico del backend."
-        />
-      </UCard>
-
-      <UCard>
-        <template #header>
-          <div class="flex justify-between items-center">
-            <h3 class="font-bold">
-              Moras
-            </h3>
-            <span class="text-sm text-gray-500">
-              {{ morasPrestamo.length }} registradas
-            </span>
-          </div>
-        </template>
-        <EmptyState
-          v-if="!morasPrestamo.length"
-          icono="i-lucide-alert-triangle"
-          titulo="Sin moras"
-          descripcion="No se han generado moras para este préstamo."
-        />
-        <UTable
-          v-else
-          sticky
-          :data="morasPrestamo as unknown as Record<string, unknown>[]"
-          :columns="[
-            { accessorKey: 'id', header: 'ID' },
-            { accessorKey: 'cuota_id', header: 'Cuota' },
-            { header: 'Fecha', cell: ({ row }: { row: { original: Record<string, unknown> } }) => formatoFecha(String(row.original.fecha)) },
-            { header: 'Valor', cell: ({ row }: { row: { original: Record<string, unknown> } }) => formatoMoneda(Number(row.original.valor)) },
-            { header: 'Estado', cell: ({ row }: { row: { original: Record<string, unknown> } }) => String(row.original.estado ?? '') }
-          ]"
-          class="max-h-[40vh]"
-        />
-      </UCard>
     </template>
+
+    <PrestamoPagoModal
+      :open="pagoAbierto"
+      :prestamo="prestamo"
+      :cuota="cuotaSeleccionada"
+      @update:open="pagoAbierto = $event"
+      @pagado="despuesDePago"
+    />
 
     <RenovarModal
       :open="renovarAbierto"

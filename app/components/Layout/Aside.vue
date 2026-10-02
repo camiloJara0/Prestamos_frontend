@@ -8,28 +8,16 @@ const navSections = computed(() => [
   {
     label: 'Principal',
     items: [
-      { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/' },
-      { label: 'Crear préstamo', icon: 'i-lucide-plus', to: '/prestamos/nuevo' }
+      { label: 'Dashboard', icon: 'i-lucide-layout-dashboard', to: '/' }
     ]
   },
   {
-    label: 'Préstamos',
+    label: 'Gestión',
     items: [
       { label: 'Préstamos', icon: 'i-lucide-hand-coins', to: '/prestamos' },
-      { label: 'Pagos', icon: 'i-lucide-credit-card', to: '/pagos' }
-    ]
-  },
-  {
-    label: 'Clientes',
-    items: [
-      { label: 'Clientes', icon: 'i-lucide-users', to: '/clientes' }
-    ]
-  },
-  {
-    label: 'Reportes',
-    items: [
-      { label: 'Reportes', icon: 'i-lucide-bar-chart-2', to: '/reportes' },
-      { label: 'Cobranza', icon: 'i-lucide-trending-up', to: '/cobranza' }
+      { label: 'Clientes', icon: 'i-lucide-users', to: '/clientes' },
+      { label: 'Cobranza', icon: 'i-lucide-trending-up', to: '/cobranza' },
+      { label: 'Reportes', icon: 'i-lucide-bar-chart-2', to: '/reportes' }
     ]
   },
   ...(auth.isAdmin
@@ -39,6 +27,7 @@ const navSections = computed(() => [
           { label: 'Capital', icon: 'i-lucide-wallet', to: '/capital', admin: true },
           { label: 'Tipos de préstamo', icon: 'i-lucide-tags', to: '/tipos-prestamo', admin: true },
           { label: 'Tipos de pago', icon: 'i-lucide-list', to: '/tipos-pago', admin: true },
+          { label: 'Moras', icon: 'i-lucide-alert-triangle', to: '/moras', admin: true },
           { label: 'Usuarios', icon: 'i-lucide-user-cog', to: '/usuarios', admin: true }
         ]
       }]
@@ -172,9 +161,9 @@ async function cerrarSesion() {
 </template>
 
 <style scoped>
-/* ── Aside raíz ── */
+/* -- Aside root -- */
 .aside-root {
-  border-right: 1px solid rgba(124, 58, 237, 0.15);
+  border-right: 1px solid rgba(124, 58, 237, 0.08);
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: width;
 }
@@ -183,21 +172,21 @@ async function cerrarSesion() {
   width: 56px;
 }
 
-/* ── Toggle ── */
+/* -- Toggle -- */
 .toggle-btn {
   transition: color 0.2s, background 0.2s;
 }
 
 .toggle-btn:hover {
   color: #a78bfa;
-  background: rgba(124, 58, 237, 0.1);
+  background: rgba(124, 58, 237, 0.08);
 }
 
 .toggle-icon {
   font-size: 15px;
 }
 
-/* ── Navegación ── */
+/* -- Navigation -- */
 .aside-nav {
   flex: 1;
   overflow-y: auto;
@@ -211,7 +200,7 @@ async function cerrarSesion() {
 }
 
 .nav-section {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .section-label {
@@ -219,25 +208,25 @@ async function cerrarSesion() {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #6b6678;
-  padding: 10px 8px 4px;
+  color: #5a5570;
+  padding: 12px 8px 6px;
   white-space: nowrap;
   overflow: hidden;
 }
 
 .section-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.04);
   margin: 6px 4px;
 }
 
-/* ── Item de navegación ── */
+/* -- Nav item -- */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   color: #9792a8;
   font-size: 13.5px;
@@ -246,16 +235,16 @@ async function cerrarSesion() {
   overflow: hidden;
   position: relative;
   transition: background 0.18s ease, color 0.18s ease;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   color: #d4d0e8;
 }
 
 .nav-item.active {
-  background: rgba(124, 58, 237, 0.14);
+  background: rgba(124, 58, 237, 0.12);
   color: #c4b5fd;
   border-left: 2px solid #7c3aed;
 }
@@ -284,24 +273,24 @@ async function cerrarSesion() {
   flex-shrink: 0;
 }
 
-/* ── Footer ── */
+/* -- Footer -- */
 .aside-footer {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  min-height: 60px;
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  min-height: 64px;
   overflow: hidden;
 }
 
 .user-avatar {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(124, 58, 237, 0.3);
-  border: 1px solid rgba(124, 58, 237, 0.4);
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(124, 58, 237, 0.15));
+  border: 1px solid rgba(124, 58, 237, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -315,7 +304,7 @@ async function cerrarSesion() {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -328,19 +317,19 @@ async function cerrarSesion() {
 
 .user-role {
   font-size: 10.5px;
-  color: #6b6678;
+  color: #5a5570;
 }
 
 .logout-btn {
   flex-shrink: 0;
-  color: #6b6678 !important;
+  color: #5a5570 !important;
 }
 
 .logout-btn:hover {
   color: #f87171 !important;
 }
 
-/* ── Transición texto fade ── */
+/* -- Text fade transition -- */
 .fade-text-enter-active {
   transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;
 }

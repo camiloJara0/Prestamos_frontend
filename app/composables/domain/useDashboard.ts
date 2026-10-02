@@ -23,9 +23,10 @@ export function useDashboard() {
   })
 
   const totalActivos = computed(() => data.prestamosActivos.length)
-  const saldoPendienteTotal = computed(() =>
-    data.prestamosActivos.reduce((sum, p) => sum + p.saldo_pendiente, 0)
-  )
+  const saldoPendienteTotal = computed(() => {
+    if (!data.prestamosActivos.length) return 0
+    return data.prestamosActivos.reduce((sum, p) => sum + p.saldo_pendiente, 0)
+  })
   const gananciaNeta = computed(() => data.ganancias?.ganancia_neta ?? 0)
   const totalPrestadoPeriodo = computed(() => data.ganancias?.total_prestado ?? 0)
   const totalPerdidas = computed(() => data.perdidas?.total_perdidas ?? 0)
@@ -56,12 +57,12 @@ export function useDashboard() {
     try {
       const [capitalResult, prestamosResult, gananciasResult, perdidasResult] = await Promise.allSettled([
         getCapital(),
-        getPrestamos({ estado: 'activo', limit: 500 }),
+        getPrestamos({ estado: 'activo', limit: 100 }),
         getReporteGanancias(),
         getReportePerdidas()
       ])
       if (capitalResult.status === 'fulfilled') data.capital = capitalResult.value
-      if (prestamosResult.status === 'fulfilled') data.prestamosActivos = prestamosResult.value
+      if (prestamosResult.status === 'fulfilled') data.prestamosActivos = prestamosResult.value.items
       if (gananciasResult.status === 'fulfilled') data.ganancias = gananciasResult.value
       if (perdidasResult.status === 'fulfilled') data.perdidas = perdidasResult.value
 

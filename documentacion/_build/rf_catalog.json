@@ -1,0 +1,377 @@
+{
+ "RF-001": {
+  "nombre": "Inicio de sesión",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-002": {
+  "nombre": "Renovación de sesión",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-003": {
+  "nombre": "Cierre de sesión",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-004": {
+  "nombre": "Identidad del usuario activo",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-005": {
+  "nombre": "Cambio de contraseña",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-006": {
+  "nombre": "Recuperación de contraseña",
+  "prioridad": "Media",
+  "estado": "Parcial"
+ },
+ "RF-007": {
+  "nombre": "Administración de usuarios",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-008": {
+  "nombre": "Protección de rutas en el frontend",
+  "prioridad": "Máxima",
+  "estado": "Pendiente"
+ },
+ "RF-009": {
+  "nombre": "Autorización por rol en el backend",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-010": {
+  "nombre": "Auditoría de operaciones sensibles",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-011": {
+  "nombre": "Configuración del sistema",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-012": {
+  "nombre": "Alta de cliente",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-013": {
+  "nombre": "Listado paginado con filtros",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-014": {
+  "nombre": "Búsqueda por nombre, cédula o teléfono",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-015": {
+  "nombre": "Detalle del cliente con historial",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-016": {
+  "nombre": "Edición y baja de clientes",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-017": {
+  "nombre": "Bloqueo de operación por cliente bloqueado",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-018": {
+  "nombre": "Historial financiero del cliente",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-019": {
+  "nombre": "Estadísticas del cliente",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-020": {
+  "nombre": "Registro de solicitud",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-021": {
+  "nombre": "Flujo de evaluación y decisión",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-022": {
+  "nombre": "Conversión de solicitud en préstamo",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-023": {
+  "nombre": "Notificación del estado de la solicitud",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-024": {
+  "nombre": "Permisos del módulo",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-025": {
+  "nombre": "Creación de préstamo con cálculo financiero",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-026": {
+  "nombre": "Validación de capital disponible",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-027": {
+  "nombre": "Generación de cuotas",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-028": {
+  "nombre": "Listado y filtros de préstamos",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-029": {
+  "nombre": "Detalle de préstamo con cuotas y pagos",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-030": {
+  "nombre": "Renovación de préstamo",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-031": {
+  "nombre": "Declaración de préstamo perdido",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-032": {
+  "nombre": "Cierre automático al saldar",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-033": {
+  "nombre": "Bloqueos por estado terminal",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-034": {
+  "nombre": "Ajuste de capital del préstamo",
+  "prioridad": "Media",
+  "estado": "Parcial"
+ },
+ "RF-035": {
+  "nombre": "Reestructuración de préstamo",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-036": {
+  "nombre": "Registro de pago con desglose",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-037": {
+  "nombre": "Validación de cuadre del pago",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-038": {
+  "nombre": "Actualización de saldo, cuota y capital",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-039": {
+  "nombre": "Idempotencia en el registro de pagos",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-040": {
+  "nombre": "Historial de pagos del préstamo",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-041": {
+  "nombre": "Historial global de pagos",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-042": {
+  "nombre": "Reversión o ajuste de pagos",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-043": {
+  "nombre": "Comprobante de pago",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-044": {
+  "nombre": "Cálculo diario de moras",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-045": {
+  "nombre": "Consulta de moras por préstamo",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-046": {
+  "nombre": "Procesamiento manual de moras",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-047": {
+  "nombre": "Gestión de cobranza",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-048": {
+  "nombre": "Recordatorios de cobro",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-049": {
+  "nombre": "Centro de notificaciones",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-050": {
+  "nombre": "Capital global y libro de movimientos",
+  "prioridad": "Máxima",
+  "estado": "Completada"
+ },
+ "RF-051": {
+  "nombre": "Ingresos y egresos de caja",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-052": {
+  "nombre": "Reporte de ganancias y pérdidas",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-053": {
+  "nombre": "Reporte de cartera",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-054": {
+  "nombre": "Reporte de cobranza",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-055": {
+  "nombre": "Exportación a Excel y PDF",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-056": {
+  "nombre": "Indicadores principales",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-057": {
+  "nombre": "Distribución de cartera por estado",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-058": {
+  "nombre": "Indicadores de cobranza y mora",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-059": {
+  "nombre": "Consulta consolidada del tablero",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-060": {
+  "nombre": "Notificaciones web push",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-061": {
+  "nombre": "Notificaciones por correo",
+  "prioridad": "Alta",
+  "estado": "Pendiente"
+ },
+ "RF-062": {
+  "nombre": "Notificaciones por texto y mensajería",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-063": {
+  "nombre": "Plantillas de mensajes",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-064": {
+  "nombre": "Pasarela de pago",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-065": {
+  "nombre": "Scoring y buró de crédito",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-066": {
+  "nombre": "Firma electrónica de contratos",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-067": {
+  "nombre": "Importación de extractos bancarios",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-068": {
+  "nombre": "Catálogo de tipos de préstamo",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-069": {
+  "nombre": "Catálogo de tipos de pago",
+  "prioridad": "Alta",
+  "estado": "Completada"
+ },
+ "RF-070": {
+  "nombre": "Paginación consistente",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-071": {
+  "nombre": "Operación sin conexión",
+  "prioridad": "Media",
+  "estado": "Parcial"
+ },
+ "RF-072": {
+  "nombre": "Actualización de la aplicación",
+  "prioridad": "Alta",
+  "estado": "Parcial"
+ },
+ "RF-073": {
+  "nombre": "Multiempresa",
+  "prioridad": "Media",
+  "estado": "Pendiente"
+ },
+ "RF-074": {
+  "nombre": "Seguridad de la plataforma",
+  "prioridad": "Máxima",
+  "estado": "Pendiente"
+ },
+ "RF-075": {
+  "nombre": "Respaldo y recuperación",
+  "prioridad": "Máxima",
+  "estado": "Pendiente"
+ }
+}

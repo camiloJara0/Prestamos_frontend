@@ -3,9 +3,12 @@ import { z } from 'zod'
 import type { Mora, MoraCreateUpdate } from '#shared/types/mora'
 import { useMoras } from '~/composables/domain/useMoras'
 import { UiEstadoBadge, UButton } from '#components'
+import DataTable from '~/components/ui/DataTable.vue'
+import ModalDialog from '~/components/ui/ModalDialog.vue'
+import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: 'admin'
 })
 
 const { moras, loading, error, fetch: fetchMoras, fetchByPrestamo, actualizar, eliminar, procesar } = useMoras()
@@ -147,24 +150,22 @@ const columns = [
 
 <template>
   <div class="p-6 space-y-4">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 class="text-2xl font-bold">
-          Moras
-        </h1>
-        <p class="text-sm text-gray-500">
-          La mora se calcula al 1% diario sobre el valor de la cuota por los días de atraso.
-        </p>
-      </div>
-      <UButton
-        color="warning"
-        icon="i-lucide-calculator"
-        :loading="procesando"
-        @click="procesarMorasAhora"
-      >
-        Procesar moras ahora
-      </UButton>
-    </div>
+    <UiPageHeader
+      titulo="Moras"
+      descripcion="La mora se calcula al 1% diario sobre el valor de la cuota por los días de atraso."
+      icono="i-lucide-alert-triangle"
+    >
+      <template #actions>
+        <UButton
+          color="warning"
+          icon="i-lucide-calculator"
+          :loading="procesando"
+          @click="procesarMorasAhora"
+        >
+          Procesar moras ahora
+        </UButton>
+      </template>
+    </UiPageHeader>
 
     <UCard>
       <div class="flex items-end gap-3">
@@ -246,7 +247,7 @@ const columns = [
             color="neutral"
             variant="outline"
             :disabled="enviando"
-            @click="modalEdicion = false"
+            @click="() => { modalEdicion = false }"
           />
           <UButton
             label="Guardar"

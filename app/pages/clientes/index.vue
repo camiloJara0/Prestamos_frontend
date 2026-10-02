@@ -18,7 +18,6 @@ const confirmarEliminar = ref<Cliente | null>(null)
 const enviando = ref(false)
 const errorCampo = ref<Record<string, string>>({})
 const formRef = ref<{ submit: () => void } | null>(null)
-
 const toast = useToast()
 
 async function inicializar() {

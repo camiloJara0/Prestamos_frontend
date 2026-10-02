@@ -1,12 +1,8 @@
 import type { Pago, PagoCreate } from '#shared/types/pago'
+import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
-export interface GetPagosParams {
-  skip?: number
-  limit?: number
-}
-
-export const getPagos = async (params: GetPagosParams = {}) => {
-  return useApi().apiGet<Pago[]>('/pagos', { query: { ...params } })
+export const getPagos = async (params: PaginacionParams = {}) => {
+  return useApi().apiGet<RespuestaPaginada<Pago>>('/pagos', { query: { ...params } })
 }
 
 export const createPago = async (data: PagoCreate) => {

@@ -1,9 +1,9 @@
 import type { TipoPrestamo, TipoPrestamoCreate } from '#shared/types/tipo_prestamo'
 import type { TipoPago, TipoPagoCreate } from '#shared/types/tipo_pago'
-import type { PaginacionParams } from '#shared/types/paginacion'
+import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
 export const getTiposPrestamo = async (params: PaginacionParams = {}) => {
-  return useApi().apiGet<TipoPrestamo[]>('/tipo_prestamo', { query: params })
+  return useApi().apiGet<RespuestaPaginada<TipoPrestamo>>('/tipo_prestamo', { query: params })
 }
 
 export const getTipoPrestamoById = async (id: number) => {
@@ -23,7 +23,7 @@ export const deleteTipoPrestamo = async (id: number) => {
 }
 
 export const getTiposPago = async (params: PaginacionParams = {}) => {
-  return useApi().apiGet<TipoPago[]>('/tipo_pago', { query: params })
+  return useApi().apiGet<RespuestaPaginada<TipoPago>>('/tipo_pago', { query: params })
 }
 
 export const getTipoPagoById = async (id: number) => {

@@ -3,6 +3,7 @@ import type { EstadoPrestamo } from '#shared/types/prestamo'
 import { usePrestamos } from '~/composables/domain/usePrestamos'
 import { UiEstadoBadge, UButton } from '#components'
 import DataTable from '~/components/ui/DataTable.vue'
+import PrestamoModalCrear from '~/components/prestamos/PrestamoModalCrear.vue'
 
 definePageMeta({
   middleware: 'auth'
@@ -17,6 +18,7 @@ const estadoSeleccionado = ref<string>('activo')
 const busqueda = ref('')
 const fechaDesde = ref('')
 const fechaHasta = ref('')
+const crearAbierto = ref(false)
 
 async function aplicarFiltros() {
   setFiltros({
@@ -24,7 +26,7 @@ async function aplicarFiltros() {
     busqueda: busqueda.value || undefined,
     fecha_desde: fechaDesde.value || undefined,
     fecha_hasta: fechaHasta.value || undefined,
-    skip: 0,
+    page: 1,
     limit: 50
   })
   await fetch()
@@ -44,11 +46,15 @@ async function inicializar() {
 inicializar()
 
 async function cargarMas() {
-  setFiltros({ skip: (filtros.value.skip ?? 0) + (filtros.value.limit ?? 50) })
-  await fetch()
+  setFiltros({ page: (filtros.value.page ?? 1) + 1 })
+  await fetch(filtros.value, { anexar: true })
 }
 
 function verDetalle(prestamoId: number) {
+  router.push(`/prestamos/${prestamoId}`)
+}
+
+function despuesDeCrear(prestamoId: number) {
   router.push(`/prestamos/${prestamoId}`)
 }
 
@@ -109,23 +115,21 @@ const filtroGlobal = (row: Record<string, unknown>, termino: string) => {
 
 <template>
   <div class="p-6 space-y-4">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 class="text-2xl font-bold">
-          Préstamos
-        </h1>
-        <p class="text-sm text-gray-500">
-          Listado de préstamos con filtros.
-        </p>
-      </div>
-      <UButton
-        color="primary"
-        icon="i-lucide-plus"
-        to="/prestamos/nuevo"
-      >
-        Nuevo préstamo
-      </UButton>
-    </div>
+    <UiPageHeader
+      titulo="Préstamos"
+      descripcion="Listado de préstamos con filtros."
+      icono="i-lucide-hand-coins"
+    >
+      <template #actions>
+        <UButton
+          color="primary"
+          icon="i-lucide-plus"
+          @click="() => { crearAbierto = true }"
+        >
+          Nuevo préstamo
+        </UButton>
+      </template>
+    </UiPageHeader>
 
     <UCard>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -206,5 +210,11 @@ const filtroGlobal = (row: Record<string, unknown>, termino: string) => {
         @click="cargarMas"
       />
     </div>
+
+    <PrestamoModalCrear
+      :open="crearAbierto"
+      @update:open="crearAbierto = $event"
+      @creado="despuesDeCrear"
+    />
   </div>
 </template>

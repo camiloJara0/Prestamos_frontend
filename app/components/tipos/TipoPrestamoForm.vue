@@ -86,7 +86,7 @@ defineExpose({ submit, validar })
     >
       <UInput
         v-model="form.nombre"
-            class="w-full"
+        class="w-full"
         placeholder="Ej: Personal"
       />
     </UFormField>
@@ -100,7 +100,7 @@ defineExpose({ submit, validar })
         min="0"
         step="0.01"
         placeholder="Ej: 2.5"
-            class="w-full"
+        class="w-full"
       />
     </UFormField>
     <UFormField
@@ -113,7 +113,7 @@ defineExpose({ submit, validar })
         min="1"
         step="1"
         placeholder="Ej: 12"
-            class="w-full"
+        class="w-full"
       />
     </UFormField>
     <UFormField
@@ -122,7 +122,7 @@ defineExpose({ submit, validar })
       <USelect
         v-model="form.estado"
         :items="[{ label: 'Activo', value: 'activo' }, { label: 'Inactivo', value: 'inactivo' }]"
-            class="w-full"
+        class="w-full"
       />
     </UFormField>
     <UFormField
@@ -134,7 +134,7 @@ defineExpose({ submit, validar })
         v-model="form.descripcion"
         placeholder="Descripción del tipo de préstamo"
         :rows="2"
-            class="w-full"
+        class="w-full"
       />
     </UFormField>
   </form>

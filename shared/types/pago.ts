@@ -12,6 +12,10 @@ export type Pago = {
   interes_pagado: number
   mora_pagada: number
   observaciones?: string | null
+  referencia_recibo?: string | null
+  estado_pago?: string
+  fecha_devolucion?: string | null
+  motivo_devolucion?: string | null
   created_at?: string
   updated_at?: string
 }

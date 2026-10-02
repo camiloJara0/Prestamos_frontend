@@ -3,6 +3,7 @@ import { createCliente, deleteCliente, getClientes, updateCliente } from '~/serv
 
 export function useClientes() {
   const clientes = ref<Cliente[]>([])
+  const paginacion = ref()
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -10,7 +11,13 @@ export function useClientes() {
     loading.value = true
     error.value = null
     try {
-      clientes.value = await getClientes({ skip: 0, limit: 1000 })
+      const response = await getClientes({ page: 1, limit: 100 })
+      paginacion.value = {
+        page: response.page,
+        pages: response.pages,
+        total: response.total
+      }
+      clientes.value = response.items
     } catch {
       error.value = 'No se pudieron cargar los clientes.'
     } finally {

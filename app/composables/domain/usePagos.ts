@@ -6,11 +6,12 @@ export function usePagos() {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  async function fetch(params: { skip?: number, limit?: number } = { skip: 0, limit: 100 }) {
+  async function fetch(params: { page?: number, limit?: number } = { page: 1, limit: 100 }) {
     loading.value = true
     error.value = null
     try {
-      pagos.value = await getPagos(params)
+      const respuesta = await getPagos(params)
+      pagos.value = respuesta.items
     } catch {
       error.value = 'No se pudieron cargar los pagos.'
     } finally {

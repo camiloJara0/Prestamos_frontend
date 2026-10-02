@@ -34,7 +34,11 @@ const isOpen = computed({
         {{ descripcion }}
       </slot>
     </template>
-    <slot name="body" />
-    <slot name="footer" />
+    <template #body>
+      <slot name="body" />
+    </template>
+    <template #footer>
+      <slot name="footer" />
+    </template>
   </UModal>
 </template>

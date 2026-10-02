@@ -14,15 +14,15 @@ withDefaults(defineProps<{
   <UCard class="stat-card glass">
     <div class="flex items-start justify-between gap-3">
       <div class="min-w-0">
-        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+        <p class="text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider truncate">
           {{ titulo }}
         </p>
-        <p class="font-display text-2xl font-bold text-gray-900 dark:text-white mt-1 truncate">
+        <p class="font-display text-2xl font-bold text-gray-900 dark:text-white mt-1.5 truncate">
           {{ valor }}
         </p>
         <p
           v-if="footer"
-          class="text-xs text-gray-400 mt-1"
+          class="text-xs text-gray-400 dark:text-gray-500 mt-1.5"
         >
           {{ footer }}
         </p>
@@ -30,7 +30,7 @@ withDefaults(defineProps<{
       <div
         v-if="icono"
         class="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
-        :class="`bg-(--color-${color}-500)/12 text-(--color-${color}-500)`"
+        :class="`bg-(--color-${color}-500)/10 text-(--color-${color}-500)`"
       >
         <UIcon
           :name="icono"
@@ -43,6 +43,11 @@ withDefaults(defineProps<{
 
 <style scoped>
 .stat-card {
-  border: 1px solid rgba(124, 58, 237, 0.18);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-xl);
+}
+
+.dark .stat-card {
+  border-color: rgba(255, 255, 255, 0.04);
 }
 </style>

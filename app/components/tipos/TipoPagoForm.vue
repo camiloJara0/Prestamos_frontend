@@ -56,7 +56,7 @@ defineExpose({ submit, validar })
     >
       <UInput
         v-model="form.nombre"
-            class="w-full"
+        class="w-full"
         placeholder="Ej: Efectivo"
       />
     </UFormField>
@@ -66,7 +66,7 @@ defineExpose({ submit, validar })
     >
       <UTextarea
         v-model="form.descripcion"
-            class="w-full"
+        class="w-full"
         placeholder="Descripción del tipo de pago"
         :rows="2"
       />

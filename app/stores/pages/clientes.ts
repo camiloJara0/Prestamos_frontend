@@ -4,12 +4,15 @@ import type { Cliente } from '#shared/types/clientes'
 
 export const useClienteStore = defineStore('clientes', {
   state: () => ({
-    clientes: [] as Cliente[]
+    clientes: [] as Cliente[],
+    total: 0
   }),
 
   actions: {
     async get() {
-      this.clientes = await getClientes()
+      const response = await getClientes()
+      this.clientes = response.items
+      this.total = response.total
     }
   }
 })

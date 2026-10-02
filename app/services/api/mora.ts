@@ -1,12 +1,8 @@
 import type { Mora, MoraCreateUpdate, RespuestaProcesarMoras } from '#shared/types/mora'
+import type { PaginacionParams, RespuestaPaginada } from '#shared/types/paginacion'
 
-export interface GetMorasParams {
-  skip?: number
-  limit?: number
-}
-
-export const getMoras = async (params: GetMorasParams = {}) => {
-  return useApi().apiGet<Mora[]>('/moras', { query: { ...params } })
+export const getMoras = async (params: PaginacionParams = {}) => {
+  return useApi().apiGet<RespuestaPaginada<Mora>>('/moras', { query: { ...params } })
 }
 
 export const getMorasByPrestamo = async (prestamoId: number) => {
